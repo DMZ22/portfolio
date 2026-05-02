@@ -37,3 +37,5 @@ vite.config.d.ts
 # claude / agents
 .claude/
 .claude.json
+
+.vercel

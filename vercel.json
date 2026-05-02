@@ -11,12 +11,6 @@
       ]
     },
     {
-      "source": "/(.*\\.(svg|ico|png|jpg|jpeg|gif|webp|avif))",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" }
-      ]
-    },
-    {
       "source": "/DevCV3.2.pdf",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=3600" },
