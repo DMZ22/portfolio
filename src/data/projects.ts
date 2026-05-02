@@ -136,7 +136,6 @@ export const projects: Project[] = [
       'Django trading dashboard featuring scalp trade signals, multi-timeframe confluence, 20+ technical indicators, LSTM forecasting, news sentiment, backtesting and Firebase auth. Covers 230+ symbols across US/Indian stocks, 60+ cryptos, commodities, forex and global ETFs.',
     tech: ['Django', 'Python', 'LSTM', 'PostgreSQL', 'Firebase', 'TradingView'],
     github: 'https://github.com/DMZ22/Stock-Trader-Pro',
-    live: 'https://graves-clarify-freeness.ngrok-free.dev',
     category: 'FinTech',
     accent: 'from-violet-500 via-fuchsia-500 to-pink-500',
     featured: true,
