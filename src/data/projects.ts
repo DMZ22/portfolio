@@ -14,20 +14,6 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: 'stock-trader-pro',
-    title: 'Stock Trader Pro',
-    tagline: 'Production AI trading dashboard with 230+ assets',
-    description:
-      'Django trading dashboard featuring scalp trade signals, multi-timeframe confluence, 20+ technical indicators, LSTM forecasting, news sentiment, backtesting and Firebase auth. Covers 230+ symbols across US/Indian stocks, 60+ cryptos, commodities, forex and global ETFs.',
-    tech: ['Django', 'Python', 'LSTM', 'PostgreSQL', 'Firebase', 'TradingView'],
-    github: 'https://github.com/DMZ22/Stock-Trader-Pro',
-    live: 'https://graves-clarify-freeness.ngrok-free.dev',
-    category: 'FinTech',
-    accent: 'from-violet-500 via-fuchsia-500 to-pink-500',
-    featured: true,
-    year: '2026',
-  },
-  {
     slug: 'mediscan-ai',
     title: 'MediScan AI',
     tagline: 'One-stop clinical AI platform',
@@ -141,6 +127,20 @@ export const projects: Project[] = [
     category: 'Full-Stack',
     accent: 'from-emerald-400 via-green-500 to-lime-500',
     year: '2025',
+  },
+  {
+    slug: 'stock-trader-pro',
+    title: 'Stock Trader Pro',
+    tagline: 'Production AI trading dashboard with 230+ assets',
+    description:
+      'Django trading dashboard featuring scalp trade signals, multi-timeframe confluence, 20+ technical indicators, LSTM forecasting, news sentiment, backtesting and Firebase auth. Covers 230+ symbols across US/Indian stocks, 60+ cryptos, commodities, forex and global ETFs.',
+    tech: ['Django', 'Python', 'LSTM', 'PostgreSQL', 'Firebase', 'TradingView'],
+    github: 'https://github.com/DMZ22/Stock-Trader-Pro',
+    live: 'https://graves-clarify-freeness.ngrok-free.dev',
+    category: 'FinTech',
+    accent: 'from-violet-500 via-fuchsia-500 to-pink-500',
+    featured: true,
+    year: '2026',
   },
 ]
 
