@@ -54,7 +54,7 @@ export default function CommandPalette() {
       go: open_(p.live || p.github || '#'),
     }))
     const links: Item[] = [
-      { id: 'resume', title: 'Download Résumé', hint: 'DevCV3.2.pdf', kind: 'action', go: () => { const a = document.createElement('a'); a.href = '/DevCV3.2.pdf'; a.download = 'DevashishMoghe_CV.pdf'; a.click(); setOpen(false) } },
+      { id: 'resume', title: 'Download Résumé', hint: 'DevCV3.33.pdf', kind: 'action', go: () => { const a = document.createElement('a'); a.href = '/DevCV3.33.pdf'; a.download = 'DevashishMoghe_CV.pdf'; a.click(); setOpen(false) } },
       { id: 'email', title: 'Send email', hint: 'devashishmoghe@gmail.com', kind: 'link', go: () => { window.location.href = 'mailto:devashishmoghe@gmail.com'; setOpen(false) } },
       { id: 'gh', title: 'Open GitHub', hint: '@DMZ22', kind: 'link', go: open_('https://github.com/DMZ22') },
       { id: 'li', title: 'Open LinkedIn', hint: '/devashish-moghe', kind: 'link', go: open_('https://www.linkedin.com/in/devashish-moghe-b5b959341/') },

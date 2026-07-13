@@ -28,7 +28,7 @@ const items: Item[] = [
     period: '2022 — Present',
     title: 'B.Tech — Computer Science (AI & ML)',
     where: 'Shri Vaishnav Vidyapeeth Vishwavidyalaya, Indore',
-    bullets: ['Current CGPA · 6.87'],
+    bullets: ['Current CGPA · 7.16'],
   },
   {
     kind: 'edu',
@@ -101,7 +101,7 @@ export default function Experience() {
               proper résumé, just in case the code doesn't do the talking.
             </p>
             <a
-              href="/DevCV3.2.pdf"
+              href="/DevCV3.33.pdf"
               download
               className="mt-6 inline-flex items-center gap-2 border border-white/20 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.25em] text-bone hover:border-neo-red hover:text-neo-red transition-colors"
             >

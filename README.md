@@ -55,7 +55,7 @@ The `vercel.json` in the repo handles SPA rewrites and cache headers for `/asset
 ```
 portfolio/
 ├── public/
-│   ├── DevCV3.2.pdf        # downloadable résumé
+│   ├── DevCV3.33.pdf       # downloadable résumé
 │   └── favicon.svg
 ├── src/
 │   ├── components/         # all sections + UI primitives
