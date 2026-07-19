@@ -14,7 +14,7 @@ type Item = {
 const items: Item[] = [
   {
     kind: 'work',
-    period: 'Ongoing',
+    period: 'Jan 2026 — Apr 2026',
     title: 'Python Developer Intern',
     where: 'AlphaWizz',
     bullets: [
@@ -25,10 +25,10 @@ const items: Item[] = [
   },
   {
     kind: 'edu',
-    period: '2022 — Present',
+    period: '2022 — 2026',
     title: 'B.Tech — Computer Science (AI & ML)',
     where: 'Shri Vaishnav Vidyapeeth Vishwavidyalaya, Indore',
-    bullets: ['Current CGPA · 7.16'],
+    bullets: ['CGPA · 7.16'],
   },
   {
     kind: 'edu',
