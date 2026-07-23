@@ -125,6 +125,28 @@ function useStreakTexture() {
   }, [])
 }
 
+/** Soft radial annulus texture for the ecliptic glow disc */
+function useEclipticTexture() {
+  return useMemo(() => {
+    const size = 512
+    const c = document.createElement('canvas')
+    c.width = c.height = size
+    const ctx = c.getContext('2d')!
+    const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
+    g.addColorStop(0.0, 'rgba(0,0,0,0)')
+    g.addColorStop(0.22, 'rgba(0,0,0,0)')
+    g.addColorStop(0.34, 'rgba(255,150,80,0.55)')
+    g.addColorStop(0.5, 'rgba(140,90,255,0.25)')
+    g.addColorStop(0.72, 'rgba(60,90,255,0.10)')
+    g.addColorStop(1.0, 'rgba(0,0,0,0)')
+    ctx.fillStyle = g
+    ctx.fillRect(0, 0, size, size)
+    const tex = new THREE.CanvasTexture(c)
+    tex.colorSpace = THREE.SRGBColorSpace
+    return tex
+  }, [])
+}
+
 /** One star layer — per-vertex color for spectral class */
 function StarsLayer({
   count, radius, size, intensity = 1,
@@ -167,6 +189,9 @@ function StarsLayer({
   useFrame((state) => {
     if (!pointsRef.current) return
     pointsRef.current.rotation.y = state.clock.elapsedTime * 0.003
+    // gentle collective twinkle, offset per layer so they never sync
+    const mat = pointsRef.current.material as THREE.PointsMaterial
+    mat.opacity = 0.86 + Math.sin(state.clock.elapsedTime * 1.3 + radius) * 0.14
   })
 
   return (
@@ -183,6 +208,61 @@ function StarsLayer({
         blending={THREE.AdditiveBlending}
       />
     </points>
+  )
+}
+
+/** Faint Milky-Way band arcing across the deep background */
+function MilkyWay() {
+  const g = useRef<THREE.Group>(null!)
+  const tex = useSoftPointTexture()
+  useFrame((_, d) => { if (g.current) g.current.rotation.y += d * 0.002 })
+  const patches = useMemo(() => {
+    const colors = ['#8a9bd9', '#c9b8ff', '#ffd9c2', '#6b7fd7', '#b393e8']
+    return Array.from({ length: 16 }).map((_, i) => {
+      const a = (i / 16) * Math.PI * 2
+      const r = 30
+      const wobble = (Math.sin(i * 3.7) + Math.cos(i * 1.9)) * 2
+      return {
+        pos: [Math.cos(a) * r, Math.sin(a) * r * 0.35 + wobble, -Math.abs(Math.sin(a)) * 18 - 6] as [number, number, number],
+        scale: 7 + (i % 4) * 2.2,
+        color: colors[i % colors.length],
+        opacity: 0.04 + (i % 3) * 0.02,
+      }
+    })
+  }, [])
+  return (
+    <group ref={g} rotation={[0.5, 0, 0.35]}>
+      {patches.map((p, i) => (
+        <sprite key={i} position={p.pos} scale={[p.scale * 1.8, p.scale, 1]}>
+          <spriteMaterial map={tex} color={p.color} transparent opacity={p.opacity} blending={THREE.AdditiveBlending} depthWrite={false} />
+        </sprite>
+      ))}
+    </group>
+  )
+}
+
+/** Glowing accretion / ecliptic disc lying in the orbital plane */
+function EclipticDisc() {
+  const ref = useRef<THREE.Mesh>(null!)
+  const tex = useEclipticTexture()
+  useFrame((state) => {
+    if (!ref.current) return
+    ref.current.rotation.z = state.clock.elapsedTime * 0.02
+    const mat = ref.current.material as THREE.MeshBasicMaterial
+    mat.opacity = 0.3 + Math.sin(state.clock.elapsedTime * 0.7) * 0.06
+  })
+  return (
+    <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
+      <planeGeometry args={[13, 13]} />
+      <meshBasicMaterial
+        map={tex}
+        transparent
+        opacity={0.32}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
   )
 }
 
@@ -540,14 +620,27 @@ function Atom({ label, seed }: { label: string; seed: number }) {
           roughness={0.2}
         />
       </mesh>
+      {/* a few atoms get Saturn rings for planetary variety */}
+      {seed % 5 === 0 && (
+        <mesh rotation={[Math.PI / 2.6, 0.4, 0]}>
+          <torusGeometry args={[size * 2.2, size * 0.16, 8, 48]} />
+          <meshBasicMaterial
+            color={spectrum[1]}
+            transparent
+            opacity={hover ? 0.85 : 0.5}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+          />
+        </mesh>
+      )}
       <Billboard>
         <Text
           position={[0, size + 0.15, 0]}
-          fontSize={hover ? 0.2 : 0.15}
-          color={hover ? hoverColor : '#ebe6db'}
+          fontSize={hover ? 0.21 : 0.165}
+          color={hover ? hoverColor : '#f4f0e6'}
           anchorX="center"
           anchorY="bottom"
-          outlineWidth={0.006}
+          outlineWidth={0.009}
           outlineColor="#02030a"
         >
           {label}
@@ -577,6 +670,7 @@ function Cluster() {
   return (
     <group ref={group}>
       <Sun />
+      <EclipticDisc />
       <OrbitRings />
       {skills.map((s, i) => (
         <Atom key={s.label} label={s.label} seed={i + 1} />
@@ -602,6 +696,7 @@ function Scene() {
       <StarsLayer count={180}  radius={30} size={0.28} intensity={1.1} />
       <StarsLayer count={28}   radius={22} size={0.7}  intensity={1.3} />
 
+      <MilkyWay />
       <Nebula />
       <Dust />
       <ShootingStars />
@@ -619,14 +714,14 @@ export default function SkillsGalaxy() {
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red"
+            className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red"
           >
             § 03.5 — Constellation
           </motion.p>
           <h2 className="mt-3 font-display text-5xl md:text-7xl font-medium uppercase tracking-tightest leading-[0.9] text-bone">
             The <span className="font-serif italic text-neo-red">stack</span> in orbit.
           </h2>
-          <p className="mt-5 max-w-xl text-bone/70 text-sm md:text-base leading-relaxed">
+          <p className="mt-5 max-w-xl text-bone/85 text-sm md:text-base leading-relaxed">
             A little solar system of the tools I reach for most. Move your cursor
             to tilt the view; hover any star to light it up. Catch a shooting
             star if you're lucky.
@@ -664,10 +759,10 @@ export default function SkillsGalaxy() {
             }}
           />
 
-          <div className="pointer-events-none absolute bottom-3 left-4 font-mono text-[10px] uppercase tracking-[0.3em] text-bone/40">
+          <div className="pointer-events-none absolute bottom-3 left-4 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/60">
             {skills.length} stars · hover to ignite
           </div>
-          <div className="pointer-events-none absolute top-3 right-4 font-mono text-[10px] uppercase tracking-[0.3em] text-bone/40">
+          <div className="pointer-events-none absolute top-3 right-4 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/60">
             SECTOR-01 · live feed
           </div>
         </div>

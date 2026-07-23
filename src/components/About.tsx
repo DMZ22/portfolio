@@ -41,7 +41,7 @@ export default function About() {
             className="col-span-12 md:col-span-4"
           >
             <div className="sticky top-28">
-              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red">
+              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red">
                 § 01 — About
               </p>
               <h2 className="mt-4 font-display text-5xl md:text-6xl font-medium uppercase tracking-tightest leading-[0.9] text-bone">
@@ -74,7 +74,7 @@ export default function About() {
               just to see if it can be done.
             </p>
 
-            <p className="mt-8 max-w-2xl text-bone/70 leading-relaxed">
+            <p className="mt-8 max-w-2xl text-bone/85 leading-relaxed">
               Trained on CDC health records, Bitcoin candles, chart screenshots
               and 70k customer churn rows. Equally happy in Django, FastAPI,
               React or a Streamlit notebook. Generalist by practice, picky
@@ -87,7 +87,7 @@ export default function About() {
                   key={f.k}
                   className="group flex items-baseline justify-between gap-4 border-b border-white/10 py-3 text-sm transition-colors hover:border-neo-red/60"
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/50 group-hover:text-neo-red">
+                  <span className="font-mono text-[11px] uppercase tracking-[0.25em] text-bone/70 group-hover:text-neo-red">
                     {f.k}
                   </span>
                   <span className="text-bone text-right">{f.v}</span>
@@ -114,14 +114,14 @@ export default function About() {
               key={s.l}
               className={`relative p-6 md:p-8 ${i !== 3 ? 'border-b md:border-b-0 md:border-r border-white/10' : ''} ${i < 2 ? 'border-b border-white/10 md:border-b-0' : ''}`}
             >
-              <div className="absolute top-2 left-3 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/30">
+              <div className="absolute top-2 left-3 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/30">
                 0{i + 1}
               </div>
               <div className="font-display text-5xl md:text-6xl font-medium text-bone">
                 <Counter to={s.n} />
                 <span className="text-neo-red">{s.s}</span>
               </div>
-              <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/60">
+              <div className="mt-2 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/80">
                 {s.l}
               </div>
             </div>

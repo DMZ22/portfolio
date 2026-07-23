@@ -47,13 +47,13 @@ export default function Konami() {
           exit={{ opacity: 0, y: -20 }}
           className="fixed top-24 left-1/2 -translate-x-1/2 z-[9999] border-2 border-neo-red bg-ink-950 px-6 py-4 shadow-2xl"
         >
-          <div className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red mb-1">
+          <div className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red mb-1">
             ▲ ▲ ▼ ▼ ◀ ▶ ◀ ▶ B A — Konami unlocked
           </div>
           <div className="font-display text-2xl uppercase tracking-tight text-bone">
             Secret mode · <span className="text-neo-red">+30 XP</span>
           </div>
-          <div className="mt-1 font-serif italic text-sm text-bone/70">
+          <div className="mt-1 font-serif italic text-sm text-bone/85">
             thanks for looking under the hood ✦
           </div>
         </motion.div>

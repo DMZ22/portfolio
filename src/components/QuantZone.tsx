@@ -46,7 +46,7 @@ export default function QuantZone() {
       <div className="mx-auto max-w-7xl px-6 py-24">
         <div className="grid grid-cols-12 gap-6 items-end mb-10">
           <div className="col-span-12 md:col-span-6">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red">
               § 02.5 — Quant Zone
             </p>
             <h2 className="mt-3 font-display text-5xl md:text-7xl font-medium uppercase tracking-tightest leading-[0.9] text-bone">
@@ -54,14 +54,14 @@ export default function QuantZone() {
             </h2>
           </div>
           <div className="col-span-12 md:col-span-6 md:text-right">
-            <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/60">
+            <div className="inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/80">
               <span className="relative flex h-2 w-2">
                 <span className="absolute inset-0 animate-ping rounded-full bg-emerald-400" />
                 <span className="relative h-2 w-2 rounded-full bg-emerald-400" />
               </span>
               Live simulation — BTC/USD
             </div>
-            <div className="mt-2 flex md:justify-end gap-6 font-mono text-xs uppercase tracking-[0.25em] text-bone/50">
+            <div className="mt-2 flex md:justify-end gap-6 font-mono text-xs uppercase tracking-[0.25em] text-bone/70">
               <span>OHLC</span>
               <span>MA(8)</span>
               <span>VOL</span>
@@ -155,25 +155,25 @@ export default function QuantZone() {
 
           <div className="relative mt-4 grid grid-cols-2 md:grid-cols-4 gap-4 font-mono text-[11px] uppercase tracking-[0.25em]">
             <div>
-              <div className="text-bone/40 mb-1">last</div>
+              <div className="text-bone/60 mb-1">last</div>
               <div className="text-bone">{candles[candles.length - 1].c.toFixed(2)}</div>
             </div>
             <div>
-              <div className="text-bone/40 mb-1">high</div>
+              <div className="text-bone/60 mb-1">high</div>
               <div className="text-emerald-400">{Math.max(...candles.map((c) => c.h)).toFixed(2)}</div>
             </div>
             <div>
-              <div className="text-bone/40 mb-1">low</div>
+              <div className="text-bone/60 mb-1">low</div>
               <div className="text-neo-red">{Math.min(...candles.map((c) => c.l)).toFixed(2)}</div>
             </div>
             <div>
-              <div className="text-bone/40 mb-1">signal</div>
+              <div className="text-bone/60 mb-1">signal</div>
               <div className="text-neo-red">BUY · 73%</div>
             </div>
           </div>
         </motion.div>
 
-        <p className="mt-6 max-w-2xl text-bone/60 text-sm leading-relaxed">
+        <p className="mt-6 max-w-2xl text-bone/80 text-sm leading-relaxed">
           Demo of the signal engine powering{' '}
           <a href="https://github.com/DMZ22/Stock-Trader-Pro" target="_blank" rel="noreferrer" className="text-neo-red underline underline-offset-4">
             Stock Trader Pro

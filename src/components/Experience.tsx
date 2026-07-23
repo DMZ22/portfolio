@@ -46,10 +46,10 @@ const items: Item[] = [
   },
   {
     kind: 'cert',
-    period: '2024',
-    title: '3× NPTEL Certifications',
-    where: 'IIT Ropar / Kharagpur / Kanpur',
-    bullets: ['Python, AI for Economics, Soft Skills — details in § 03 Certifications.'],
+    period: '2024–25',
+    title: '3× NPTEL + Oracle Gen AI',
+    where: 'IIT Ropar / Kharagpur / Kanpur · Oracle University',
+    bullets: ['Python, AI for Economics, Soft Skills + OCI 2025 Generative AI Professional — details in § 02.5 Certifications.'],
   },
   {
     kind: 'highlight',
@@ -61,7 +61,7 @@ const items: Item[] = [
     kind: 'highlight',
     period: '—',
     title: 'Odoo Hackathon',
-    where: 'Participant',
+    where: 'Finalist',
   },
 ]
 
@@ -85,7 +85,7 @@ export default function Experience() {
       <div className="mx-auto max-w-7xl px-6 py-28">
         <div className="grid grid-cols-12 gap-6 mb-14">
           <div className="col-span-12 md:col-span-5">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red flex items-center gap-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red flex items-center gap-3">
               <span className="h-[2px] w-8 bg-neo-red" /> § 02 — Résumé
             </p>
             <h2 className="mt-3 font-display text-5xl md:text-7xl font-medium uppercase tracking-tightest leading-[0.9] text-bone">
@@ -102,10 +102,10 @@ export default function Experience() {
             </p>
             <a
               href="/DevCV3.4.pdf"
-              download
-              className="mt-6 inline-flex items-center gap-2 border border-white/20 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.25em] text-bone hover:border-neo-red hover:text-neo-red transition-colors"
+              download="Devashish_Moghe_CV.pdf"
+              className="mt-6 inline-flex items-center gap-2 bg-neo-red border border-neo-red px-5 py-3 font-mono text-[11px] font-bold uppercase tracking-[0.25em] text-ink-950 hover:-translate-y-0.5 transition-transform"
             >
-              ↓ Download PDF
+              ↓ Download Résumé — PDF
             </a>
           </div>
         </div>
@@ -126,23 +126,23 @@ export default function Experience() {
                   transition={{ duration: 0.5, delay: i * 0.04 }}
                   className="group relative pl-12 md:pl-16"
                 >
-                  <div className="absolute left-0 top-2 flex h-9 w-9 md:h-11 md:w-11 items-center justify-center border border-white/15 bg-ink-950 text-bone/70 group-hover:border-neo-red group-hover:text-neo-red group-hover:bg-neo-red/10 transition-colors">
+                  <div className="absolute left-0 top-2 flex h-9 w-9 md:h-11 md:w-11 items-center justify-center border border-white/15 bg-ink-950 text-bone/85 group-hover:border-neo-red group-hover:text-neo-red group-hover:bg-neo-red/10 transition-colors">
                     <Icon size={14} />
                   </div>
 
                   <div className="border border-white/10 bg-ink-950/60 backdrop-blur-sm p-5 md:p-6 transition-colors group-hover:border-white/25">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-1">
-                      <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-neo-red">
+                      <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-neo-red">
                         {labels[it.kind]}
                       </div>
-                      <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/50">
+                      <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-bone/70">
                         {it.period}
                       </div>
                     </div>
                     <h3 className="font-display text-xl md:text-2xl font-medium text-bone leading-tight">
                       {it.title}
                     </h3>
-                    <div className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-bone/60">
+                    <div className="mt-1 font-mono text-xs uppercase tracking-[0.2em] text-bone/80">
                       — {it.where}
                     </div>
                     {it.bullets && (
@@ -160,7 +160,7 @@ export default function Experience() {
                         href={it.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="mt-3 inline-flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.25em] text-neo-red hover:text-neo-red-2 hover:underline underline-offset-4"
+                        className="mt-3 inline-flex items-center gap-2 font-mono text-[11px] uppercase tracking-[0.25em] text-neo-red hover:text-neo-red-2 hover:underline underline-offset-4"
                       >
                         <ExternalLink size={11} />
                         View credential

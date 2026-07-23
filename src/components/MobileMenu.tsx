@@ -59,7 +59,7 @@ export default function MobileMenu() {
               className="relative flex h-full flex-col"
             >
               <div className="flex items-center justify-between border-b border-white/10 px-6 py-5">
-                <span className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red">Menu</span>
+                <span className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red">Menu</span>
                 <button
                   onClick={() => { setOpen(false); playClick() }}
                   aria-label="Close menu"
@@ -89,7 +89,7 @@ export default function MobileMenu() {
                             {it.label}
                           </span>
                         </div>
-                        <span className="font-mono text-lg text-bone/40 group-hover:text-neo-red group-hover:translate-x-1 transition-all">→</span>
+                        <span className="font-mono text-lg text-bone/60 group-hover:text-neo-red group-hover:translate-x-1 transition-all">→</span>
                       </a>
                     </motion.li>
                   ))}
@@ -99,18 +99,18 @@ export default function MobileMenu() {
               <div className="border-t border-white/10 px-6 py-5 space-y-3">
                 <a
                   href="/DevCV3.4.pdf"
-                  download
+                  download="Devashish_Moghe_CV.pdf"
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-center gap-2 bg-neo-red px-4 py-3 font-mono text-xs font-bold uppercase tracking-[0.25em] text-ink-950"
                 >
                   <Download size={14} />
-                  Download Résumé
+                  Download Résumé (PDF)
                 </a>
                 <div className="flex gap-2">
                   <a
                     href="mailto:devashishmoghe@gmail.com"
                     onClick={() => setOpen(false)}
-                    className="flex-1 flex items-center justify-center gap-2 border border-white/15 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.25em] text-bone hover:border-neo-red hover:text-neo-red"
+                    className="flex-1 flex items-center justify-center gap-2 border border-white/15 px-4 py-3 font-mono text-[11px] uppercase tracking-[0.25em] text-bone hover:border-neo-red hover:text-neo-red"
                   >
                     <Mail size={12} /> Email
                   </a>
@@ -119,7 +119,7 @@ export default function MobileMenu() {
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => setOpen(false)}
-                    className="flex-1 flex items-center justify-center gap-2 border border-white/15 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.25em] text-bone hover:border-neo-red hover:text-neo-red"
+                    className="flex-1 flex items-center justify-center gap-2 border border-white/15 px-4 py-3 font-mono text-[11px] uppercase tracking-[0.25em] text-bone hover:border-neo-red hover:text-neo-red"
                   >
                     <Github size={12} /> GitHub
                   </a>
@@ -128,12 +128,12 @@ export default function MobileMenu() {
                     target="_blank"
                     rel="noreferrer"
                     onClick={() => setOpen(false)}
-                    className="flex-1 flex items-center justify-center gap-2 border border-white/15 px-4 py-3 font-mono text-[10px] uppercase tracking-[0.25em] text-bone hover:border-neo-red hover:text-neo-red"
+                    className="flex-1 flex items-center justify-center gap-2 border border-white/15 px-4 py-3 font-mono text-[11px] uppercase tracking-[0.25em] text-bone hover:border-neo-red hover:text-neo-red"
                   >
                     <Linkedin size={12} /> In
                   </a>
                 </div>
-                <div className="pt-2 font-mono text-[9px] uppercase tracking-[0.3em] text-bone/40 text-center">
+                <div className="pt-2 font-mono text-[10px] uppercase tracking-[0.3em] text-bone/60 text-center">
                   — Devashish / 2026 —
                 </div>
               </div>

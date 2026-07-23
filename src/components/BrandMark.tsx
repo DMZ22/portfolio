@@ -91,7 +91,7 @@ export function BrandMark({ size = 32 }: { size?: number }) {
         <div className="font-display text-sm font-semibold text-bone">
           Devashish<span className="text-neo-red">.</span>
         </div>
-        <div className="font-mono text-[8px] uppercase tracking-[0.3em] text-bone/50 mt-0.5">
+        <div className="font-mono text-[8px] uppercase tracking-[0.3em] text-bone/70 mt-0.5">
           developer · cs student
         </div>
       </div>

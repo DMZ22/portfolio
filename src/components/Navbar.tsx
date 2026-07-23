@@ -51,7 +51,7 @@ export default function Navbar() {
             <li key={it.id}>
               <a
                 href={`#${it.id}`}
-                className="group flex items-center gap-1.5 px-3 py-2 text-bone/70 transition-colors hover:text-bone"
+                className="group flex items-center gap-1.5 px-3 py-2 text-bone/85 transition-colors hover:text-bone"
               >
                 <span className="text-neo-red/70 group-hover:text-neo-red transition-colors">{it.n}</span>
                 <span>{it.label}</span>
@@ -60,18 +60,18 @@ export default function Navbar() {
           ))}
         </ul>
 
-        <div className="hidden sm:flex items-center gap-3 font-mono text-[10px] uppercase tracking-[0.25em]">
-          <span className="flex items-center gap-1.5 text-bone/60">
+        <div className="hidden sm:flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.25em]">
+          <span className="flex items-center gap-1.5 text-bone/80">
             <span className="inline-block h-1.5 w-1.5 rounded-full bg-neo-red animate-pulse" />
             {time}
           </span>
           <SoundToggle />
           <a
             href="/DevCV3.4.pdf"
-            download
-            className="group relative border border-neo-red bg-neo-red px-3 py-2 text-ink-950 font-semibold transition-all hover:-translate-y-0.5"
+            download="Devashish_Moghe_CV.pdf"
+            className="group relative border border-neo-red bg-neo-red px-3 py-2 text-ink-950 font-bold transition-all hover:-translate-y-0.5"
           >
-            ↓ Résumé
+            ↓ Résumé · PDF
           </a>
         </div>
 

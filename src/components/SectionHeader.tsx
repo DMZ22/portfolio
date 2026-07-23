@@ -16,7 +16,7 @@ export default function SectionHeader({
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.4 }}
-        className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red"
+        className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red"
       >
         {kicker}
       </motion.p>
@@ -35,7 +35,7 @@ export default function SectionHeader({
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.4, delay: 0.2 }}
-          className="mt-4 max-w-xl text-bone/70"
+          className="mt-4 max-w-xl text-bone/85"
         >
           {description}
         </motion.p>

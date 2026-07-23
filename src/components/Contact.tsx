@@ -13,7 +13,7 @@ export default function Contact() {
       <div className="mx-auto max-w-7xl px-6 relative">
         <div className="grid grid-cols-12 gap-6">
           <div className="col-span-12 md:col-span-5">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red">
               § 05 — Contact
             </p>
             <motion.h2
@@ -26,7 +26,7 @@ export default function Contact() {
               Get in <br />
               <span className="font-serif italic text-neo-red">touch —</span>
             </motion.h2>
-            <p className="mt-6 max-w-md text-bone/70 leading-relaxed">
+            <p className="mt-6 max-w-md text-bone/85 leading-relaxed">
               Email or LinkedIn for direct messages, GitHub for the code. Always
               happy to talk shop — backend, ML, or anything that lives between
               those two.
@@ -68,7 +68,7 @@ export default function Contact() {
                       transition={{ duration: 0.4 }}
                     />
                     <div className="relative flex items-center gap-5">
-                      <span className="font-mono text-xs text-bone/40 group-hover:text-ink-950">
+                      <span className="font-mono text-xs text-bone/60 group-hover:text-ink-950">
                         0{i + 1}
                       </span>
                       <s.icon size={20} className="text-bone group-hover:text-ink-950" />
@@ -76,21 +76,21 @@ export default function Contact() {
                         <div className="font-display text-2xl md:text-3xl text-bone group-hover:text-ink-950 transition-colors">
                           {s.label}
                         </div>
-                        <div className="font-mono text-xs text-bone/50 group-hover:text-ink-950/70 mt-1">
+                        <div className="font-mono text-xs text-bone/70 group-hover:text-ink-950/70 mt-1">
                           {s.handle}
                         </div>
                       </div>
                     </div>
                     <ArrowUpRight
                       size={24}
-                      className="relative text-bone/40 group-hover:text-ink-950 transition-all group-hover:rotate-45"
+                      className="relative text-bone/60 group-hover:text-ink-950 transition-all group-hover:rotate-45"
                     />
                   </a>
                 </motion.li>
               ))}
             </ul>
 
-            <div className="mt-10 grid grid-cols-2 gap-4 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/60">
+            <div className="mt-10 grid grid-cols-2 gap-4 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/80">
               <div>
                 <div className="text-neo-red mb-1">Currently</div>
                 <div className="text-bone">B.Tech CSE — AI / ML</div>

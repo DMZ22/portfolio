@@ -54,7 +54,7 @@ export default function CommandPalette() {
       go: open_(p.live || p.github || '#'),
     }))
     const links: Item[] = [
-      { id: 'resume', title: 'Download Résumé', hint: 'DevCV3.4.pdf', kind: 'action', go: () => { const a = document.createElement('a'); a.href = '/DevCV3.4.pdf'; a.download = 'DevashishMoghe_CV.pdf'; a.click(); setOpen(false) } },
+      { id: 'resume', title: 'Download Résumé (PDF)', hint: 'DevCV3.4.pdf', kind: 'action', go: () => { const a = document.createElement('a'); a.href = '/DevCV3.4.pdf'; a.download = 'Devashish_Moghe_CV.pdf'; a.click(); setOpen(false) } },
       { id: 'email', title: 'Send email', hint: 'devashishmoghe@gmail.com', kind: 'link', go: () => { window.location.href = 'mailto:devashishmoghe@gmail.com'; setOpen(false) } },
       { id: 'gh', title: 'Open GitHub', hint: '@DMZ22', kind: 'link', go: open_('https://github.com/DMZ22') },
       { id: 'li', title: 'Open LinkedIn', hint: '/devashish-moghe', kind: 'link', go: open_('https://www.linkedin.com/in/devashish-moghe-b5b959341/') },
@@ -112,12 +112,12 @@ export default function CommandPalette() {
       {/* Floating hint */}
       <button
         onClick={() => { setOpen(true); playClick() }}
-        className="fixed bottom-5 left-5 z-40 group hidden md:flex items-center gap-2 border border-white/15 bg-ink-950/80 backdrop-blur px-3 py-2 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/70 hover:border-neo-red hover:text-neo-red transition-colors"
+        className="fixed bottom-5 left-5 z-40 group hidden md:flex items-center gap-2 border border-white/15 bg-ink-950/80 backdrop-blur px-3 py-2 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/85 hover:border-neo-red hover:text-neo-red transition-colors"
         aria-label="Open command palette"
       >
         <Search size={12} />
         Search
-        <kbd className="ml-2 border border-white/15 px-1.5 py-0.5 text-[9px] font-medium">
+        <kbd className="ml-2 border border-white/15 px-1.5 py-0.5 text-[10px] font-medium">
           {isMac ? '⌘' : 'CTRL'} K
         </kbd>
       </button>
@@ -168,14 +168,14 @@ export default function CommandPalette() {
                   placeholder="Search sections, projects, links…"
                   className="flex-1 bg-transparent outline-none font-display text-bone placeholder:text-bone/30"
                 />
-                <kbd className="border border-white/15 px-1.5 py-0.5 font-mono text-[9px] uppercase text-bone/50">
+                <kbd className="border border-white/15 px-1.5 py-0.5 font-mono text-[10px] uppercase text-bone/70">
                   ESC
                 </kbd>
               </div>
 
               <ul className="max-h-[48vh] overflow-y-auto py-2">
                 {results.length === 0 && (
-                  <li className="px-4 py-6 text-center font-mono text-xs uppercase tracking-[0.25em] text-bone/40">
+                  <li className="px-4 py-6 text-center font-mono text-xs uppercase tracking-[0.25em] text-bone/60">
                     no matches
                   </li>
                 )}
@@ -191,8 +191,8 @@ export default function CommandPalette() {
                       <div className="min-w-0">
                         <div className="font-display text-sm truncate">{it.title}</div>
                         <div
-                          className={`font-mono text-[10px] uppercase tracking-[0.2em] truncate ${
-                            i === idx ? 'text-ink-950/70' : 'text-bone/40'
+                          className={`font-mono text-[11px] uppercase tracking-[0.2em] truncate ${
+                            i === idx ? 'text-ink-950/70' : 'text-bone/60'
                           }`}
                         >
                           {it.kind} · {it.hint}
@@ -204,7 +204,7 @@ export default function CommandPalette() {
                 ))}
               </ul>
 
-              <div className="flex items-center justify-between border-t border-white/10 px-4 py-2 font-mono text-[9px] uppercase tracking-[0.25em] text-bone/40">
+              <div className="flex items-center justify-between border-t border-white/10 px-4 py-2 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/60">
                 <span>
                   <kbd className="border border-white/15 px-1">↑</kbd>{' '}
                   <kbd className="border border-white/15 px-1">↓</kbd> navigate

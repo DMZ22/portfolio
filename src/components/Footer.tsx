@@ -9,7 +9,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 pt-16">
         <div className="flex flex-wrap items-end justify-between gap-10 border-b border-white/10 pb-12">
           <div className="max-w-xl">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red mb-4">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red mb-4">
               — the motto
             </p>
             <motion.p
@@ -22,7 +22,7 @@ export default function Footer() {
               "Keep on keeping<br />
               <span className="text-neo-red">on.</span>"
             </motion.p>
-            <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/50">
+            <p className="mt-5 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/70">
               — Devashish / 2026
             </p>
           </div>
@@ -44,7 +44,7 @@ export default function Footer() {
           Devashish<span className="text-neo-red">.</span>
         </motion.h3>
 
-        <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-white/10 pt-6 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/50">
+        <div className="mt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-white/10 pt-6 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/70">
           <div>
             © {new Date().getFullYear()} Devashish Moghe · built by hand with React, Tailwind &amp; Three.js
           </div>

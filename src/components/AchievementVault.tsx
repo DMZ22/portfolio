@@ -47,7 +47,7 @@ export default function AchievementVault() {
       <div className="mx-auto max-w-7xl px-6 py-24">
         <div className="grid grid-cols-12 gap-6 items-end mb-12">
           <div className="col-span-12 md:col-span-7">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red">
               § 05.5 — Achievement Vault
             </p>
             <h2 className="mt-3 font-display text-5xl md:text-7xl font-medium uppercase tracking-tightest leading-[0.9] text-bone">
@@ -55,7 +55,7 @@ export default function AchievementVault() {
             </h2>
           </div>
           <div className="col-span-12 md:col-span-5 md:text-right font-mono text-xs uppercase tracking-[0.25em]">
-            <div className="text-bone/50">
+            <div className="text-bone/70">
               unlocked{' '}
               <span className="text-bone font-bold tabular-nums">
                 {String(count).padStart(2, '0')}
@@ -96,7 +96,7 @@ export default function AchievementVault() {
                   animate={isOn ? { scale: 1, opacity: 1 } : { scale: 0.8, opacity: 0.3 }}
                   transition={{ type: 'spring', stiffness: 260, damping: 18 }}
                   className={`relative mb-4 flex h-12 w-12 items-center justify-center border ${
-                    isOn ? 'border-neo-red bg-neo-red text-ink-950' : 'border-white/15 text-bone/40'
+                    isOn ? 'border-neo-red bg-neo-red text-ink-950' : 'border-white/15 text-bone/60'
                   } transition-colors`}
                 >
                   <a.icon size={20} />
@@ -114,12 +114,12 @@ export default function AchievementVault() {
                 >
                   {isOn ? a.title : '— locked —'}
                 </div>
-                <div className={`mt-2 font-mono text-[10px] uppercase tracking-[0.22em] leading-relaxed transition-colors ${
-                  isOn ? 'text-bone/60' : 'text-bone/20'
+                <div className={`mt-2 font-mono text-[11px] uppercase tracking-[0.22em] leading-relaxed transition-colors ${
+                  isOn ? 'text-bone/80' : 'text-bone/20'
                 }`}>
                   {isOn ? a.desc : 'scroll to reveal'}
                 </div>
-                <div className="mt-4 font-mono text-[9px] uppercase tracking-[0.3em] text-bone/30">
+                <div className="mt-4 font-mono text-[10px] uppercase tracking-[0.3em] text-bone/30">
                   #{String(i + 1).padStart(3, '0')}
                 </div>
               </div>

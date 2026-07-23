@@ -53,12 +53,12 @@ export default function SplashLoader() {
           />
 
           {/* top meta bar */}
-          <div className="flex items-center justify-between px-6 py-5 font-mono text-[10px] uppercase tracking-[0.3em]">
+          <div className="flex items-center justify-between px-6 py-5 font-mono text-[11px] uppercase tracking-[0.3em]">
             <motion.span
               initial={{ opacity: 0, x: -10 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="text-bone/70"
+              className="text-bone/85"
             >
               <span className="text-neo-red">●</span> Loading portfolio
             </motion.span>
@@ -66,7 +66,7 @@ export default function SplashLoader() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="font-mono text-bone/50 tabular-nums"
+              className="font-mono text-bone/70 tabular-nums"
             >
               {count.toString().padStart(3, '0')}%
             </motion.span>
@@ -78,7 +78,7 @@ export default function SplashLoader() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.15 }}
-              className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red mb-5"
+              className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red mb-5"
             >
               § 00 — Enter
             </motion.p>
@@ -96,7 +96,7 @@ export default function SplashLoader() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.1 }}
-              className="mt-4 font-serif italic text-bone/60 text-lg"
+              className="mt-4 font-serif italic text-bone/80 text-lg"
             >
               — developer, shipping.
             </motion.p>
@@ -112,7 +112,7 @@ export default function SplashLoader() {
                 transition={{ duration: 1.8, ease: [0.7, 0, 0.2, 1] }}
               />
             </div>
-            <div className="mt-3 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.3em] text-bone/40">
+            <div className="mt-3 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.3em] text-bone/60">
               <span>INIT · FETCH · RENDER</span>
               <span>PRESS ENTER TO SKIP</span>
             </div>

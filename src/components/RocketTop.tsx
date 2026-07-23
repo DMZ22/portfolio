@@ -45,7 +45,7 @@ export default function RocketTop() {
           className="absolute top-12 w-1.5 bg-gradient-to-b from-neo-red via-orange-400 to-transparent"
         />
       )}
-      <span className="mt-2 font-mono text-[9px] uppercase tracking-[0.25em] text-bone/50 group-hover:text-neo-red transition-colors">
+      <span className="mt-2 font-mono text-[10px] uppercase tracking-[0.25em] text-bone/70 group-hover:text-neo-red transition-colors">
         top
       </span>
     </motion.button>

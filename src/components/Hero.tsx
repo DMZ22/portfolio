@@ -32,7 +32,7 @@ export default function Hero() {
         transition={{ delay: 0.2 }}
         className="relative z-10 mx-auto w-full max-w-7xl px-6"
       >
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 border-y border-white/10 py-3 font-mono text-[10px] uppercase tracking-[0.3em] text-bone/50">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 border-y border-white/10 py-3 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/70">
           <div><span className="text-neo-red">001</span> — Portfolio</div>
           <div><span className="text-neo-red">EST</span> — 2026</div>
           <div><span className="text-neo-red">LOC</span> — India / Remote</div>
@@ -51,7 +51,7 @@ export default function Hero() {
             transition={{ delay: 0.2 }}
             className="col-span-12 md:col-span-8"
           >
-            <p className="mb-6 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-bone/60">
+            <p className="mb-6 flex items-center gap-3 font-mono text-xs uppercase tracking-[0.3em] text-bone/80">
               <span className="h-[2px] w-8 bg-neo-red" />
               India — B.Tech CSE (AI & ML)
             </p>
@@ -147,11 +147,11 @@ export default function Hero() {
               <Magnetic>
                 <a
                   href="/DevCV3.4.pdf"
-                  download
-                  className="group inline-flex items-center gap-3 border border-white/20 bg-ink-950/60 backdrop-blur px-6 py-4 font-display text-sm font-semibold uppercase tracking-[0.2em] text-bone transition-colors hover:border-neo-red hover:text-neo-red"
+                  download="Devashish_Moghe_CV.pdf"
+                  className="group inline-flex items-center gap-3 border-2 border-neo-red bg-ink-950/60 backdrop-blur px-6 py-4 font-display text-sm font-semibold uppercase tracking-[0.2em] text-neo-red transition-colors hover:bg-neo-red hover:text-ink-950"
                 >
-                  <Download size={16} />
-                  Resume
+                  <Download size={16} className="transition-transform group-hover:translate-y-0.5" />
+                  Download CV — PDF
                 </a>
               </Magnetic>
               <div className="flex items-center gap-1 border border-white/10 bg-ink-950/60 backdrop-blur p-1">
@@ -159,7 +159,7 @@ export default function Hero() {
                   href="https://github.com/DMZ22"
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3 text-bone/70 transition-colors hover:text-bone hover:bg-white/5"
+                  className="p-3 text-bone/85 transition-colors hover:text-bone hover:bg-white/5"
                   aria-label="GitHub"
                 >
                   <Github size={16} />
@@ -168,7 +168,7 @@ export default function Hero() {
                   href="https://www.linkedin.com/in/devashish-moghe-b5b959341/"
                   target="_blank"
                   rel="noreferrer"
-                  className="p-3 text-bone/70 transition-colors hover:text-bone hover:bg-white/5"
+                  className="p-3 text-bone/85 transition-colors hover:text-bone hover:bg-white/5"
                   aria-label="LinkedIn"
                 >
                   <Linkedin size={16} />
@@ -184,7 +184,7 @@ export default function Hero() {
             className="col-span-12 md:col-span-4 md:border-l md:border-white/10 md:pl-6 flex flex-col justify-between gap-8"
           >
             <div className="relative">
-              <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-bone/50">
+              <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-bone/70">
                 Currently shipping
               </p>
               <p className="mt-3 font-serif text-2xl italic leading-snug text-bone">
@@ -209,7 +209,7 @@ export default function Hero() {
                 <div className="font-display text-3xl font-semibold text-bone">
                   10<span className="text-neo-red">+</span>
                 </div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-bone/50 mt-1">
+                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-bone/70 mt-1">
                   shipped
                 </div>
               </div>
@@ -217,7 +217,7 @@ export default function Hero() {
                 <div className="font-display text-3xl font-semibold text-bone">
                   6<span className="text-neo-red">+</span>
                 </div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-bone/50 mt-1">
+                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-bone/70 mt-1">
                   domains
                 </div>
               </div>
@@ -225,7 +225,7 @@ export default function Hero() {
                 <div className="font-display text-3xl font-semibold text-bone">
                   4<span className="text-neo-red">y</span>
                 </div>
-                <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-bone/50 mt-1">
+                <div className="font-mono text-[11px] uppercase tracking-[0.2em] text-bone/70 mt-1">
                   coding
                 </div>
               </div>
@@ -235,7 +235,7 @@ export default function Hero() {
       </motion.div>
 
       <div className="mx-auto w-full max-w-7xl px-6">
-        <div className="flex items-center justify-between border-t border-white/10 pt-3 font-mono text-[10px] uppercase tracking-[0.3em] text-bone/50">
+        <div className="flex items-center justify-between border-t border-white/10 pt-3 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/70">
           <span>Scroll ↓</span>
           <span className="hidden sm:block">BACKEND · WEB · AI/ML · FINTECH · DATA</span>
           <span>2026 — ∞</span>

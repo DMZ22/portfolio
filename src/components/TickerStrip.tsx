@@ -53,7 +53,7 @@ export default function TickerStrip() {
       <div className="pointer-events-none absolute inset-y-0 right-0 w-32 z-10 bg-gradient-to-l from-ink-950 via-ink-950/80 to-transparent" />
 
       {/* LIVE badge pinned left */}
-      <div className="absolute inset-y-0 left-0 z-20 flex items-center gap-2.5 bg-neo-red px-4 sm:px-5 font-mono text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.3em] text-ink-950">
+      <div className="absolute inset-y-0 left-0 z-20 flex items-center gap-2.5 bg-neo-red px-4 sm:px-5 font-mono text-[11px] sm:text-[11px] font-bold uppercase tracking-[0.3em] text-ink-950">
         <span className="relative flex h-1.5 w-1.5 sm:h-2 sm:w-2">
           <span className="absolute inset-0 animate-ping rounded-full bg-ink-950 opacity-60" />
           <span className="relative h-full w-full rounded-full bg-ink-950" />
@@ -62,9 +62,9 @@ export default function TickerStrip() {
       </div>
 
       {/* signal pinned right */}
-      <div className="absolute inset-y-0 right-0 z-20 hidden sm:flex items-center gap-3 border-l border-white/10 bg-ink-950/90 px-5 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/70">
+      <div className="absolute inset-y-0 right-0 z-20 hidden sm:flex items-center gap-3 border-l border-white/10 bg-ink-950/90 px-5 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/85">
         <span className="text-neo-red">v1.0</span>
-        <span className="text-bone/40">·</span>
+        <span className="text-bone/60">·</span>
         <span>2026</span>
       </div>
 

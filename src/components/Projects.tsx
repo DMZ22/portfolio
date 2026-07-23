@@ -43,7 +43,7 @@ function ProjectRow({ p, i }: { p: Project; i: number }) {
       />
 
       <div className="relative grid grid-cols-12 gap-4 items-start">
-        <div className="col-span-2 md:col-span-1 font-mono text-xs md:text-sm text-bone/40 pt-2">
+        <div className="col-span-2 md:col-span-1 font-mono text-xs md:text-sm text-bone/60 pt-2">
           {String(i + 1).padStart(2, '0')}
         </div>
 
@@ -60,16 +60,16 @@ function ProjectRow({ p, i }: { p: Project; i: number }) {
               <span className="inline-block h-2 w-2 bg-neo-red" />
             )}
           </div>
-          <p className="mt-2 font-serif italic text-lg md:text-xl text-bone/70">
+          <p className="mt-2 font-serif italic text-lg md:text-xl text-bone/85">
             {p.tagline}
           </p>
         </div>
 
         <div className="col-span-12 md:col-span-4 md:pl-4">
-          <p className="text-sm text-bone/70 leading-relaxed line-clamp-3 md:line-clamp-4">
+          <p className="text-sm text-bone/85 leading-relaxed line-clamp-3 md:line-clamp-4">
             {p.description}
           </p>
-          <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[10px] uppercase tracking-[0.2em] text-bone/50">
+          <div className="mt-3 flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.2em] text-bone/70">
             {p.tech.slice(0, 5).map((t) => (
               <span key={t}>/ {t}</span>
             ))}
@@ -78,15 +78,15 @@ function ProjectRow({ p, i }: { p: Project; i: number }) {
 
         <div className="col-span-12 md:col-span-2 flex md:flex-col md:items-end md:text-right gap-4">
           <div className="flex-1 md:flex-none">
-            <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-neo-red">
+            <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-neo-red">
               {p.category}
             </div>
-            <div className="font-mono text-[10px] uppercase tracking-[0.25em] text-bone/50 mt-1">
+            <div className="font-mono text-[11px] uppercase tracking-[0.25em] text-bone/70 mt-1">
               {p.year}
             </div>
           </div>
           <motion.div
-            className="flex items-center gap-2 text-bone/70 group-hover:text-neo-red"
+            className="flex items-center gap-2 text-bone/85 group-hover:text-neo-red"
             animate={{ x: hover ? 6 : 0 }}
             transition={{ duration: 0.3 }}
           >
@@ -98,13 +98,13 @@ function ProjectRow({ p, i }: { p: Project; i: number }) {
 
       {/* secondary links */}
       {((p.github && p.live) || p.report) && (
-        <div className="relative z-20 mt-4 flex gap-4 pl-2 md:pl-[8.33%] font-mono text-[10px] uppercase tracking-[0.25em]">
+        <div className="relative z-20 mt-4 flex gap-4 pl-2 md:pl-[8.33%] font-mono text-[11px] uppercase tracking-[0.25em]">
           {p.github && (
             <a
               href={p.github}
               target="_blank"
               rel="noreferrer"
-              className="text-bone/60 hover:text-bone inline-flex items-center gap-1.5"
+              className="text-bone/80 hover:text-bone inline-flex items-center gap-1.5"
             >
               <Github size={12} /> Source
             </a>
@@ -124,7 +124,7 @@ function ProjectRow({ p, i }: { p: Project; i: number }) {
               href={p.report}
               target="_blank"
               rel="noreferrer"
-              className="text-bone/60 hover:text-bone inline-flex items-center gap-1.5"
+              className="text-bone/80 hover:text-bone inline-flex items-center gap-1.5"
             >
               <FileText size={12} /> Report
             </a>
@@ -160,7 +160,7 @@ export default function Projects() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-12">
           <div>
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red">
               § 02 — Selected Work
             </p>
             <h2 className="mt-3 font-display text-5xl md:text-7xl font-medium uppercase tracking-tightest leading-[0.9] text-bone">
@@ -176,8 +176,8 @@ export default function Projects() {
               <button
                 key={c}
                 onClick={() => { setCat(c); playClick() }}
-                className={`relative font-mono text-[10px] uppercase tracking-[0.2em] px-3 py-2 transition-colors ${
-                  cat === c ? 'text-ink-950' : 'text-bone/60 hover:text-bone'
+                className={`relative font-mono text-[11px] uppercase tracking-[0.2em] px-3 py-2 transition-colors ${
+                  cat === c ? 'text-ink-950' : 'text-bone/80 hover:text-bone'
                 }`}
               >
                 {cat === c && (
@@ -220,7 +220,7 @@ export default function Projects() {
           </div>
         </Spotlight>
 
-        <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/60">
+        <div className="mt-12 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 font-mono text-[11px] uppercase tracking-[0.25em] text-bone/80">
           <span>— end of list —</span>
           <a
             href="https://github.com/DMZ22"

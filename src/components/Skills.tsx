@@ -7,7 +7,7 @@ export default function Skills() {
       <div className="mx-auto max-w-7xl px-6">
         <div className="grid grid-cols-12 gap-6 mb-14">
           <div className="col-span-12 md:col-span-5">
-            <p className="font-mono text-[10px] uppercase tracking-[0.3em] text-neo-red">
+            <p className="font-mono text-[11px] uppercase tracking-[0.3em] text-neo-red">
               § 03 — Toolkit
             </p>
             <h2 className="mt-3 font-display text-5xl md:text-7xl font-medium uppercase tracking-tightest leading-[0.9] text-bone">
@@ -35,10 +35,10 @@ export default function Skills() {
               } ${gi < Object.keys(skills).length - 1 ? 'border-b md:border-b' : ''}`}
             >
               <div className="flex items-baseline justify-between mb-5">
-                <h3 className="font-mono text-[11px] uppercase tracking-[0.3em] text-bone/60">
+                <h3 className="font-mono text-[11px] uppercase tracking-[0.3em] text-bone/80">
                   — {group}
                 </h3>
-                <span className="font-mono text-[10px] text-neo-red">
+                <span className="font-mono text-[11px] text-neo-red">
                   0{gi + 1}
                 </span>
               </div>
@@ -55,7 +55,7 @@ export default function Skills() {
                     <span className="font-display text-lg text-bone/90 group-hover:text-bone">
                       {item}
                     </span>
-                    <span className="font-mono text-[10px] text-bone/30 group-hover:text-neo-red transition-colors">
+                    <span className="font-mono text-[11px] text-bone/30 group-hover:text-neo-red transition-colors">
                       →
                     </span>
                   </motion.li>

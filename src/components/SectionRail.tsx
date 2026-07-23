@@ -44,10 +44,10 @@ export default function SectionRail() {
             <li key={s.id}>
               <a href={`#${s.id}`} className="group flex items-center gap-3 justify-end">
                 <span
-                  className={`font-mono text-[10px] uppercase tracking-[0.25em] transition-all ${
+                  className={`font-mono text-[11px] uppercase tracking-[0.25em] transition-all ${
                     isActive
                       ? 'text-bone opacity-100 translate-x-0'
-                      : 'text-bone/50 opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0'
+                      : 'text-bone/70 opacity-0 translate-x-1 group-hover:opacity-100 group-hover:translate-x-0'
                   }`}
                 >
                   <span className="text-neo-red mr-2">{s.n}</span>
