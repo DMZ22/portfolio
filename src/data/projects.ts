@@ -81,7 +81,6 @@ export const projects: Project[] = [
       'Full pipeline predicting customer churn on 5,000 synthetic customers. SQLite schema + analytical queries, three models (Logistic Regression, Random Forest, XGBoost) with GridSearchCV tuning, FastAPI inference endpoint and interactive Streamlit dashboard.',
     tech: ['Python', 'SQL', 'XGBoost', 'FastAPI', 'Streamlit', 'Docker'],
     github: 'https://github.com/DMZ22/customer-churn-analysis',
-    live: 'https://customer-churn-analysis-czhxwqfchgufgxtkftnixe.streamlit.app',
     report: '/reports/customer-churn.pdf',
     category: 'Data Science',
     accent: 'from-blue-500 via-indigo-500 to-violet-500',
