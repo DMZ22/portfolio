@@ -179,6 +179,67 @@ function makePlanetTexture(seed: number, kind: PlanetKind): THREE.CanvasTexture 
   return tex
 }
 
+/** Procedural photosphere — granulation cells, sunspot groups, faculae */
+function makeSunTexture(): THREE.CanvasTexture {
+  const rng = mulberry32(777)
+  const W2 = 512, H2 = 256
+  const c = document.createElement('canvas')
+  c.width = W2; c.height = H2
+  const ctx = c.getContext('2d')!
+  // base plasma gradient — hotter equator, slightly cooler poles
+  const base = ctx.createLinearGradient(0, 0, 0, H2)
+  base.addColorStop(0, '#ff9a3c')
+  base.addColorStop(0.5, '#ffcf5a')
+  base.addColorStop(1, '#ff9a3c')
+  ctx.fillStyle = base
+  ctx.fillRect(0, 0, W2, H2)
+  // granulation — thousands of tiny convection cells
+  for (let i = 0; i < 2600; i++) {
+    const x = rng() * W2, y = rng() * H2, r = 0.6 + rng() * 2.2
+    const hot = rng() > 0.5
+    ctx.globalAlpha = 0.05 + rng() * 0.1
+    ctx.fillStyle = hot ? '#fff3c8' : '#e06820'
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill()
+  }
+  ctx.globalAlpha = 1
+  // supergranulation — larger soft mottles
+  for (let i = 0; i < 60; i++) {
+    const x = rng() * W2, y = rng() * H2, r = 8 + rng() * 22
+    const g = ctx.createRadialGradient(x, y, 0, x, y, r)
+    g.addColorStop(0, rng() > 0.5 ? 'rgba(255,240,190,0.10)' : 'rgba(220,100,30,0.10)')
+    g.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.fillStyle = g
+    ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill()
+  }
+  // sunspot groups — dark umbra with penumbra halo, near the active latitudes
+  for (let i = 0; i < 7; i++) {
+    const x = rng() * W2
+    const y = H2 * (0.3 + rng() * 0.4)
+    const r = 3 + rng() * 8
+    const pen = ctx.createRadialGradient(x, y, r * 0.3, x, y, r * 2.2)
+    pen.addColorStop(0, 'rgba(120,40,10,0.85)')
+    pen.addColorStop(0.5, 'rgba(180,80,20,0.45)')
+    pen.addColorStop(1, 'rgba(0,0,0,0)')
+    ctx.fillStyle = pen
+    ctx.beginPath(); ctx.arc(x, y, r * 2.2, 0, Math.PI * 2); ctx.fill()
+    ctx.fillStyle = 'rgba(40,10,5,0.9)'
+    ctx.beginPath(); ctx.arc(x, y, r * 0.7, 0, Math.PI * 2); ctx.fill()
+    // faculae — bright lanes near the spot
+    ctx.strokeStyle = 'rgba(255,245,210,0.35)'
+    ctx.lineWidth = 1.2
+    for (let j = 0; j < 4; j++) {
+      ctx.beginPath()
+      const a0 = rng() * Math.PI * 2
+      ctx.arc(x + Math.cos(a0) * r * 2.6, y + Math.sin(a0) * r * 1.8, 2 + rng() * 5, 0, Math.PI * (0.6 + rng()))
+      ctx.stroke()
+    }
+  }
+  const tex = new THREE.CanvasTexture(c)
+  tex.colorSpace = THREE.SRGBColorSpace
+  tex.wrapS = THREE.RepeatWrapping
+  return tex
+}
+
 /** Procedural soft circle texture for points — avoids square sprites */
 function useSoftPointTexture() {
   return useMemo(() => {
@@ -453,31 +514,33 @@ function ShootingStars() {
   return <group ref={ref} />
 }
 
-/** Central glowing sun with corona, lens streak, and radial rays */
+/** The star: granulated photosphere, chromosphere rim, corona, lens streak, rays */
 function Sun() {
   const core = useRef<THREE.Mesh>(null!)
-  const wire = useRef<THREE.Mesh>(null!)
+  const rim = useRef<THREE.Mesh>(null!)
   const halo1 = useRef<THREE.Mesh>(null!)
   const corona = useRef<THREE.Sprite>(null!)
   const streak = useRef<THREE.Sprite>(null!)
   const rayGroup = useRef<THREE.Group>(null!)
   const coronaTex = useCoronaTexture()
   const streakTex = useStreakTexture()
+  const surfaceTex = useMemo(() => makeSunTexture(), [])
 
   useFrame((state, d) => {
     const t = state.clock.elapsedTime
     if (core.current) {
-      core.current.rotation.y += d * 0.35
-      core.current.rotation.x += d * 0.18
-      core.current.scale.setScalar(1 + Math.sin(t * 1.6) * 0.035)
+      // differential-rotation feel: slow spin + drifting texture
+      core.current.rotation.y += d * 0.06
+      surfaceTex.offset.x = t * 0.004
+      core.current.scale.setScalar(1 + Math.sin(t * 1.6) * 0.02)
     }
-    if (wire.current) {
-      wire.current.rotation.y -= d * 0.15
-      wire.current.rotation.z += d * 0.08
+    if (rim.current) {
+      const mat = rim.current.material as THREE.MeshBasicMaterial
+      mat.opacity = 0.5 + Math.sin(t * 1.4) * 0.1
     }
     if (halo1.current) {
       const mat = halo1.current.material as THREE.MeshBasicMaterial
-      mat.opacity = 0.32 + Math.sin(t * 1.1) * 0.08
+      mat.opacity = 0.26 + Math.sin(t * 1.1) * 0.07
     }
     if (corona.current) {
       const s = 5.2 + Math.sin(t * 0.9) * 0.3
@@ -493,33 +556,37 @@ function Sun() {
       rayGroup.current.rotation.z = t * 0.08
       rayGroup.current.children.forEach((m, i) => {
         const mat = (m as THREE.Sprite).material as THREE.SpriteMaterial
-        mat.opacity = 0.15 + Math.sin(t * (0.8 + i * 0.3) + i) * 0.08
+        mat.opacity = 0.12 + Math.sin(t * (0.8 + i * 0.3) + i) * 0.07
       })
     }
   })
 
   return (
     <group>
+      {/* photosphere — self-luminous granulated surface with sunspots */}
       <mesh ref={core}>
+        <sphereGeometry args={[0.75, 64, 64]} />
+        <meshBasicMaterial map={surfaceTex} toneMapped={false} />
+      </mesh>
+      {/* chromosphere — thin hot rim hugging the disc (backside shell) */}
+      <mesh ref={rim} scale={1.045}>
         <sphereGeometry args={[0.75, 48, 48]} />
-        <meshStandardMaterial
-          color="#ff6b3a"
-          emissive="#ff3d1a"
-          emissiveIntensity={2.2}
-          metalness={0.3}
-          roughness={0.4}
+        <meshBasicMaterial
+          color="#ff5a1a"
+          transparent
+          opacity={0.55}
+          side={THREE.BackSide}
+          blending={THREE.AdditiveBlending}
+          depthWrite={false}
         />
       </mesh>
-      <mesh ref={wire}>
-        <sphereGeometry args={[0.82, 24, 24]} />
-        <meshBasicMaterial color="#ffb87a" wireframe transparent opacity={0.35} />
-      </mesh>
+      {/* inner corona shell */}
       <mesh ref={halo1}>
-        <sphereGeometry args={[1.1, 32, 32]} />
+        <sphereGeometry args={[1.08, 32, 32]} />
         <meshBasicMaterial
           color="#ff6a2a"
           transparent
-          opacity={0.35}
+          opacity={0.28}
           blending={THREE.AdditiveBlending}
           depthWrite={false}
         />

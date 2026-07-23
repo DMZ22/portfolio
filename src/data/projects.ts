@@ -158,7 +158,7 @@ export const projects: Project[] = [
     tagline: 'Online book browsing & reviews',
     description:
       'A cozy book discovery web app — browse, review and track reads with a clean minimal UI.',
-    tech: ['JavaScript', 'React', 'Node.js'],
+    tech: ['React', 'Vite', 'Firebase'],
     github: 'https://github.com/DMZ22/novelnest',
     live: 'https://novelnest-wdfo.vercel.app',
     report: '/reports/novelnest.pdf',
@@ -190,7 +190,7 @@ export const stats = [
 ]
 
 export const skills = {
-  'Languages': ['Python', 'TypeScript', 'JavaScript', 'SQL', 'Go'],
+  'Languages': ['Python', 'TypeScript', 'SQL'],
   'Backend': ['Django', 'FastAPI', 'Node.js', 'REST APIs', 'PostgreSQL', 'Redis', 'Docker'],
   'Frontend': ['React', 'Next.js', 'Vite', 'Tailwind CSS', 'Framer Motion', 'Three.js'],
   'AI / ML': ['PyTorch', 'TensorFlow', 'scikit-learn', 'XGBoost', 'LightGBM', 'OpenCV', 'LSTM', 'CNN'],
