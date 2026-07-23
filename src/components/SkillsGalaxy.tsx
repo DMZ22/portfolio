@@ -33,6 +33,152 @@ const skills = [
   { label: 'GitHub', weight: 0.9 },
 ]
 
+/** Deterministic PRNG so every visitor sees the same system */
+function mulberry32(seed: number) {
+  let a = seed >>> 0
+  return () => {
+    a |= 0; a = (a + 0x6d2b79f5) | 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
+type PlanetKind = 'gas' | 'rocky' | 'ice' | 'terra'
+
+/** Procedural equirectangular planet texture — banded gas giants, cratered rock, streaked ice, living terra */
+function makePlanetTexture(seed: number, kind: PlanetKind): THREE.CanvasTexture {
+  const rng = mulberry32(seed * 7919 + 13)
+  const W2 = 256, H2 = 128
+  const c = document.createElement('canvas')
+  c.width = W2; c.height = H2
+  const ctx = c.getContext('2d')!
+
+  const gasPalettes = [
+    ['#c8a06a', '#8a5f3a', '#e6c79a', '#a2764a'], // jovian tan
+    ['#7aa7ff', '#3c5fd0', '#a9c6ff', '#5b7fe8'], // neptunian blue
+    ['#e8c39a', '#c98f5a', '#f5e2c0', '#d7a878'], // saturnine cream
+    ['#d88a6a', '#a4523c', '#f0b898', '#c06a50'], // dusty rose
+  ]
+  const rockyPalettes = [
+    ['#b0563a', '#7a3626', '#d8875f'], // martian
+    ['#8a8a92', '#5a5a64', '#b8b8c0'], // mercurial grey
+    ['#a08668', '#6e5a44', '#c8ae8e'], // sandy
+    ['#7c6a8a', '#544868', '#a894b8'], // violet rock
+  ]
+
+  if (kind === 'gas') {
+    const p = gasPalettes[seed % gasPalettes.length]
+    // horizontal turbulent bands
+    for (let y = 0; y < H2; y++) {
+      const band = Math.sin(y * 0.22 + rng() * 0.15) + Math.sin(y * 0.075 + 2.1)
+      const idx = Math.abs(Math.round(band * 1.5 + (seed % 3))) % p.length
+      ctx.fillStyle = p[idx]
+      ctx.fillRect(0, y, W2, 1)
+      // wavy lighter streak inside the band
+      if (y % 7 === (seed % 7)) {
+        ctx.globalAlpha = 0.25
+        ctx.fillStyle = p[(idx + 2) % p.length]
+        for (let x = 0; x < W2; x += 4) {
+          const off = Math.sin(x * 0.05 + y) * 2
+          ctx.fillRect(x, y + off, 4, 1)
+        }
+        ctx.globalAlpha = 1
+      }
+    }
+    // great storm spot on some giants
+    if (seed % 3 === 0) {
+      const sx = rng() * W2, sy = H2 * (0.35 + rng() * 0.3)
+      const grad = ctx.createRadialGradient(sx, sy, 1, sx, sy, 16)
+      grad.addColorStop(0, 'rgba(255,240,225,0.85)')
+      grad.addColorStop(0.5, p[3] + 'cc')
+      grad.addColorStop(1, 'rgba(0,0,0,0)')
+      ctx.fillStyle = grad
+      ctx.save(); ctx.translate(sx, sy); ctx.scale(1.8, 1); ctx.translate(-sx, -sy)
+      ctx.beginPath(); ctx.arc(sx, sy, 16, 0, Math.PI * 2); ctx.fill()
+      ctx.restore()
+    }
+  } else if (kind === 'terra') {
+    // oceans
+    ctx.fillStyle = '#2a5fc8'
+    ctx.fillRect(0, 0, W2, H2)
+    // continents — clustered green/brown blobs
+    for (let i = 0; i < 26; i++) {
+      const cx = rng() * W2, cy = H2 * 0.15 + rng() * H2 * 0.7
+      const r = 6 + rng() * 18
+      ctx.fillStyle = rng() > 0.35 ? '#3f9455' : '#8a7a4e'
+      ctx.globalAlpha = 0.9
+      for (let j = 0; j < 7; j++) {
+        ctx.beginPath()
+        ctx.arc(cx + (rng() - 0.5) * r * 1.8, cy + (rng() - 0.5) * r, r * (0.3 + rng() * 0.5), 0, Math.PI * 2)
+        ctx.fill()
+      }
+    }
+    // clouds
+    ctx.globalAlpha = 0.35
+    ctx.fillStyle = '#ffffff'
+    for (let i = 0; i < 34; i++) {
+      const cx = rng() * W2, cy = rng() * H2, r = 3 + rng() * 9
+      ctx.save(); ctx.translate(cx, cy); ctx.scale(2.2, 0.6); ctx.translate(-cx, -cy)
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill()
+      ctx.restore()
+    }
+    ctx.globalAlpha = 1
+    // polar caps
+    ctx.fillStyle = 'rgba(240,248,255,0.9)'
+    ctx.fillRect(0, 0, W2, 7)
+    ctx.fillRect(0, H2 - 7, W2, 7)
+  } else {
+    const p = kind === 'ice'
+      ? ['#cfe4f2', '#9fc2dc', '#eaf6ff']
+      : rockyPalettes[seed % rockyPalettes.length]
+    ctx.fillStyle = p[0]
+    ctx.fillRect(0, 0, W2, H2)
+    // large regional shading
+    for (let i = 0; i < 10; i++) {
+      ctx.globalAlpha = 0.18
+      ctx.fillStyle = i % 2 ? p[1] : p[2]
+      const cx = rng() * W2, cy = rng() * H2, r = 18 + rng() * 34
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill()
+    }
+    ctx.globalAlpha = 1
+    // craters with lit rims
+    const craters = kind === 'ice' ? 18 : 46
+    for (let i = 0; i < craters; i++) {
+      const cx = rng() * W2, cy = rng() * H2, r = 1 + rng() * 4.5
+      ctx.fillStyle = 'rgba(0,0,0,0.28)'
+      ctx.beginPath(); ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill()
+      ctx.fillStyle = 'rgba(255,255,255,0.22)'
+      ctx.beginPath(); ctx.arc(cx - r * 0.35, cy - r * 0.35, r * 0.55, 0, Math.PI * 2); ctx.fill()
+    }
+    if (kind === 'ice') {
+      // long frozen streaks
+      ctx.strokeStyle = 'rgba(120,160,200,0.35)'
+      ctx.lineWidth = 1
+      for (let i = 0; i < 14; i++) {
+        ctx.beginPath()
+        const y0 = rng() * H2
+        ctx.moveTo(0, y0)
+        ctx.bezierCurveTo(W2 * 0.3, y0 + (rng() - 0.5) * 24, W2 * 0.7, y0 + (rng() - 0.5) * 24, W2, y0 + (rng() - 0.5) * 12)
+        ctx.stroke()
+      }
+    }
+  }
+
+  // subtle limb/pole darkening for depth
+  const shade = ctx.createLinearGradient(0, 0, 0, H2)
+  shade.addColorStop(0, 'rgba(0,0,0,0.35)')
+  shade.addColorStop(0.18, 'rgba(0,0,0,0)')
+  shade.addColorStop(0.82, 'rgba(0,0,0,0)')
+  shade.addColorStop(1, 'rgba(0,0,0,0.35)')
+  ctx.fillStyle = shade
+  ctx.fillRect(0, 0, W2, H2)
+
+  const tex = new THREE.CanvasTexture(c)
+  tex.colorSpace = THREE.SRGBColorSpace
+  return tex
+}
+
 /** Procedural soft circle texture for points — avoids square sprites */
 function useSoftPointTexture() {
   return useMemo(() => {
@@ -48,31 +194,6 @@ function useSoftPointTexture() {
     ctx.fillRect(0, 0, size, size)
     const tex = new THREE.CanvasTexture(c)
     tex.colorSpace = THREE.SRGBColorSpace
-    return tex
-  }, [])
-}
-
-/** Dawn sky gradient background — wine/crimson/amber/gold (top → bottom) */
-function useDawnSkyTexture() {
-  return useMemo(() => {
-    const c = document.createElement('canvas')
-    c.width = 4
-    c.height = 1024
-    const ctx = c.getContext('2d')!
-    const g = ctx.createLinearGradient(0, 0, 0, 1024)
-    g.addColorStop(0.00, '#0a0414') // deep night at zenith
-    g.addColorStop(0.12, '#1a0a24') // dusky indigo
-    g.addColorStop(0.28, '#3a1030') // wine
-    g.addColorStop(0.45, '#6e1b3a') // deep rose
-    g.addColorStop(0.62, '#b83a34') // warm crimson
-    g.addColorStop(0.78, '#e26a2c') // ember orange
-    g.addColorStop(0.90, '#f4a04a') // amber
-    g.addColorStop(1.00, '#ffd9a0') // horizon gold
-    ctx.fillStyle = g
-    ctx.fillRect(0, 0, 4, 1024)
-    const tex = new THREE.CanvasTexture(c)
-    tex.colorSpace = THREE.SRGBColorSpace
-    tex.mapping = THREE.EquirectangularReflectionMapping
     return tex
   }, [])
 }
@@ -111,7 +232,6 @@ function useStreakTexture() {
     g.addColorStop(1.0, 'rgba(255,200,140,0)')
     ctx.fillStyle = g
     ctx.fillRect(0, 0, w, h)
-    // vertical soft falloff
     const g2 = ctx.createLinearGradient(0, 0, 0, h)
     g2.addColorStop(0.0, 'rgba(0,0,0,0)')
     g2.addColorStop(0.5, 'rgba(0,0,0,0.6)')
@@ -135,9 +255,9 @@ function useEclipticTexture() {
     const g = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2)
     g.addColorStop(0.0, 'rgba(0,0,0,0)')
     g.addColorStop(0.22, 'rgba(0,0,0,0)')
-    g.addColorStop(0.34, 'rgba(255,150,80,0.55)')
-    g.addColorStop(0.5, 'rgba(140,90,255,0.25)')
-    g.addColorStop(0.72, 'rgba(60,90,255,0.10)')
+    g.addColorStop(0.34, 'rgba(255,150,80,0.45)')
+    g.addColorStop(0.5, 'rgba(140,90,255,0.20)')
+    g.addColorStop(0.72, 'rgba(60,90,255,0.08)')
     g.addColorStop(1.0, 'rgba(0,0,0,0)')
     ctx.fillStyle = g
     ctx.fillRect(0, 0, size, size)
@@ -169,13 +289,12 @@ function StarsLayer({
       positions[i * 3] = r * Math.sin(phi) * Math.cos(theta)
       positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta)
       positions[i * 3 + 2] = r * Math.cos(phi)
-      // spectral tint — mostly white/bone, some blue-giants, yellow, red
       const t = Math.random()
       let r2 = 1, g2 = 1, b2 = 0.96
-      if (t < 0.55)       { r2 = 1.00; g2 = 1.00; b2 = 0.95 }  // white
-      else if (t < 0.78)  { r2 = 0.76; g2 = 0.85; b2 = 1.00 }  // blue
-      else if (t < 0.92)  { r2 = 1.00; g2 = 0.84; b2 = 0.55 }  // yellow/gold
-      else                { r2 = 1.00; g2 = 0.42; b2 = 0.30 }  // red
+      if (t < 0.55)       { r2 = 1.00; g2 = 1.00; b2 = 0.95 }
+      else if (t < 0.78)  { r2 = 0.76; g2 = 0.85; b2 = 1.00 }
+      else if (t < 0.92)  { r2 = 1.00; g2 = 0.84; b2 = 0.55 }
+      else                { r2 = 1.00; g2 = 0.42; b2 = 0.30 }
       colors[i * 3]     = r2 * intensity
       colors[i * 3 + 1] = g2 * intensity
       colors[i * 3 + 2] = b2 * intensity
@@ -189,7 +308,6 @@ function StarsLayer({
   useFrame((state) => {
     if (!pointsRef.current) return
     pointsRef.current.rotation.y = state.clock.elapsedTime * 0.003
-    // gentle collective twinkle, offset per layer so they never sync
     const mat = pointsRef.current.material as THREE.PointsMaterial
     mat.opacity = 0.86 + Math.sin(state.clock.elapsedTime * 1.3 + radius) * 0.14
   })
@@ -241,31 +359,6 @@ function MilkyWay() {
   )
 }
 
-/** Glowing accretion / ecliptic disc lying in the orbital plane */
-function EclipticDisc() {
-  const ref = useRef<THREE.Mesh>(null!)
-  const tex = useEclipticTexture()
-  useFrame((state) => {
-    if (!ref.current) return
-    ref.current.rotation.z = state.clock.elapsedTime * 0.02
-    const mat = ref.current.material as THREE.MeshBasicMaterial
-    mat.opacity = 0.3 + Math.sin(state.clock.elapsedTime * 0.7) * 0.06
-  })
-  return (
-    <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
-      <planeGeometry args={[13, 13]} />
-      <meshBasicMaterial
-        map={tex}
-        transparent
-        opacity={0.32}
-        blending={THREE.AdditiveBlending}
-        depthWrite={false}
-        side={THREE.DoubleSide}
-      />
-    </mesh>
-  )
-}
-
 /** Foreground dust motes drifting near camera */
 function Dust({ count = 250 }: { count?: number }) {
   const ref = useRef<THREE.Points>(null!)
@@ -311,7 +404,6 @@ function ShootingStars() {
 
   useFrame((_, d) => {
     if (!ref.current) return
-    // maybe spawn
     if (Math.random() < 0.012 && shots.current.length < 2) {
       const r = 9
       const theta = Math.random() * Math.PI * 2
@@ -328,10 +420,8 @@ function ShootingStars() {
       ).normalize()
       shots.current.push({ life: 0, max: 1.0, from, dir })
     }
-    // step
     for (const s of shots.current) s.life += d
     shots.current = shots.current.filter((s) => s.life < s.max)
-    // rebuild children
     while (ref.current.children.length > shots.current.length) {
       ref.current.remove(ref.current.children[0])
     }
@@ -410,7 +500,6 @@ function Sun() {
 
   return (
     <group>
-      {/* solid inner core */}
       <mesh ref={core}>
         <sphereGeometry args={[0.75, 48, 48]} />
         <meshStandardMaterial
@@ -421,12 +510,10 @@ function Sun() {
           roughness={0.4}
         />
       </mesh>
-      {/* wireframe plasma skin */}
       <mesh ref={wire}>
         <sphereGeometry args={[0.82, 24, 24]} />
         <meshBasicMaterial color="#ffb87a" wireframe transparent opacity={0.35} />
       </mesh>
-      {/* additive halo sphere */}
       <mesh ref={halo1}>
         <sphereGeometry args={[1.1, 32, 32]} />
         <meshBasicMaterial
@@ -437,7 +524,6 @@ function Sun() {
           depthWrite={false}
         />
       </mesh>
-      {/* big billboarded corona glow */}
       <sprite ref={corona} scale={[5, 5, 1]}>
         <spriteMaterial
           map={coronaTex}
@@ -448,7 +534,6 @@ function Sun() {
           depthWrite={false}
         />
       </sprite>
-      {/* horizontal anamorphic lens streak */}
       <sprite ref={streak} scale={[10, 0.18, 1]}>
         <spriteMaterial
           map={streakTex}
@@ -459,7 +544,6 @@ function Sun() {
           depthWrite={false}
         />
       </sprite>
-      {/* radial sun rays — 6 sprites rotating */}
       <group ref={rayGroup}>
         {Array.from({ length: 6 }).map((_, i) => {
           const angle = (i / 6) * Math.PI
@@ -527,125 +611,191 @@ function Nebula() {
   )
 }
 
-/** Faint orbit rings */
-function OrbitRings() {
-  const g = useRef<THREE.Group>(null!)
-  useFrame((_, d) => { if (g.current) g.current.rotation.y += d * 0.03 })
+/** Glowing accretion / ecliptic disc lying in the orbital plane */
+function EclipticDisc() {
+  const ref = useRef<THREE.Mesh>(null!)
+  const tex = useEclipticTexture()
+  useFrame((state) => {
+    if (!ref.current) return
+    ref.current.rotation.z = state.clock.elapsedTime * 0.02
+    const mat = ref.current.material as THREE.MeshBasicMaterial
+    mat.opacity = 0.26 + Math.sin(state.clock.elapsedTime * 0.7) * 0.05
+  })
   return (
-    <group ref={g}>
-      {[2.7, 3.3, 3.9, 4.5, 5.1].map((r, i) => (
-        <mesh key={i} rotation={[Math.PI / 2 + (i - 2) * 0.18, 0, i * 0.15]}>
-          <torusGeometry args={[r, 0.002, 12, 200]} />
-          <meshBasicMaterial
-            color="#ebe6db"
-            transparent
-            opacity={0.14 - i * 0.015}
-            blending={THREE.AdditiveBlending}
-            depthWrite={false}
-          />
-        </mesh>
-      ))}
-    </group>
+    <mesh ref={ref} rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.02, 0]}>
+      <planeGeometry args={[13, 13]} />
+      <meshBasicMaterial
+        map={tex}
+        transparent
+        opacity={0.28}
+        blending={THREE.AdditiveBlending}
+        depthWrite={false}
+        side={THREE.DoubleSide}
+      />
+    </mesh>
   )
 }
 
-/** Orbiting skill atom — glowing star + label */
-function Atom({ label, seed }: { label: string; seed: number }) {
-  const ref = useRef<THREE.Group>(null!)
-  const sphere = useRef<THREE.Mesh>(null!)
+/** Asteroid belt — a ring of rocky debris between the inner and outer system */
+function AsteroidBelt() {
+  const ref = useRef<THREE.Points>(null!)
+  const tex = useSoftPointTexture()
+  const geom = useMemo(() => {
+    const count = 1100
+    const positions = new Float32Array(count * 3)
+    const rng = mulberry32(4242)
+    for (let i = 0; i < count; i++) {
+      const a = rng() * Math.PI * 2
+      const r = 4.35 + rng() * 0.45
+      positions[i * 3] = Math.cos(a) * r
+      positions[i * 3 + 1] = (rng() - 0.5) * 0.14
+      positions[i * 3 + 2] = Math.sin(a) * r
+    }
+    const g = new THREE.BufferGeometry()
+    g.setAttribute('position', new THREE.BufferAttribute(positions, 3))
+    return g
+  }, [])
+  useFrame((_, d) => { if (ref.current) ref.current.rotation.y += d * 0.022 })
+  return (
+    <points ref={ref} geometry={geom}>
+      <pointsMaterial
+        size={0.022}
+        sizeAttenuation
+        color="#b8a890"
+        map={tex}
+        alphaMap={tex}
+        transparent
+        opacity={0.7}
+        depthWrite={false}
+      />
+    </points>
+  )
+}
+
+/** Orbital elements for one planet — deterministic per seed */
+function orbitalElements(seed: number, index: number, weight: number) {
+  const rng = mulberry32(seed * 104729 + 7)
+  const a = 2.35 + index * 0.152 + rng() * 0.06          // semi-major axis
+  const e = 0.03 + rng() * 0.09                           // eccentricity
+  const b = a * Math.sqrt(1 - e * e)                      // semi-minor axis
+  const cFocus = a * e                                    // sun sits at the focus
+  const inc = (rng() - 0.5) * 0.16                        // inclination ±4.6°
+  const node = rng() * Math.PI * 2                        // ascending node
+  const phase = rng() * Math.PI * 2
+  const speed = 0.85 / Math.pow(a, 1.5)                   // Kepler: ω ∝ a^-3/2
+  const spin = 0.25 + rng() * 0.6
+  const kind: PlanetKind =
+    seed % 7 === 0 ? 'terra'
+    : weight >= 0.9 ? 'gas'
+    : seed % 4 === 0 ? 'ice'
+    : 'rocky'
+  const size = (0.07 + weight * 0.075) * (kind === 'gas' ? 1.65 : 1)
+  const hasRing = kind === 'gas' && seed % 2 === 0
+  return { a, b, cFocus, inc, node, phase, speed, spin, kind, size, hasRing }
+}
+
+/** Faint elliptical orbit path — drawn in the same tilted plane the planet moves in */
+function OrbitPath({ a, b, cFocus }: { a: number; b: number; cFocus: number }) {
+  const geom = useMemo(() => {
+    const pts: THREE.Vector3[] = []
+    for (let i = 0; i <= 128; i++) {
+      const t = (i / 128) * Math.PI * 2
+      pts.push(new THREE.Vector3(Math.cos(t) * a - cFocus, 0, Math.sin(t) * b))
+    }
+    return new THREE.BufferGeometry().setFromPoints(pts)
+  }, [a, b, cFocus])
+  return (
+    <primitive
+      object={useMemo(() => {
+        const mat = new THREE.LineBasicMaterial({ color: '#ebe6db', transparent: true, opacity: 0.09 })
+        return new THREE.Line(geom, mat)
+      }, [geom])}
+    />
+  )
+}
+
+/** A skill as a real planet: textured, sun-lit, on a Keplerian orbit */
+function Planet({ label, seed, index, weight }: { label: string; seed: number; index: number; weight: number }) {
+  const orbiter = useRef<THREE.Group>(null!)
+  const body = useRef<THREE.Mesh>(null!)
   const glow = useRef<THREE.Sprite>(null!)
   const [hover, setHover] = useState(false)
-  const tex = useSoftPointTexture()
+  const softTex = useSoftPointTexture()
 
-  const { radius, speed, tilt, phase, size, spectrum } = useMemo(() => {
-    const r = 2.9 + ((seed * 37) % 28) / 14
-    const s = 0.12 + ((seed * 7) % 10) / 45
-    const t = ((seed * 13) % 360) * (Math.PI / 180)
-    const p = ((seed * 53) % 360) * (Math.PI / 180)
-    const sz = 0.045 + ((seed * 17) % 10) / 300
-    // spectrum per atom for variety (blue/white/yellow/red)
-    const palette: [string, string][] = [
-      ['#ffffff', '#fff1e0'], // white star
-      ['#bcd6ff', '#8ab1ff'], // blue
-      ['#ffd888', '#ffb64a'], // yellow
-      ['#ffb38a', '#ff7044'], // orange
-    ]
-    const sp = palette[seed % palette.length]
-    return { radius: r, speed: s, tilt: t, phase: p, size: sz, spectrum: sp }
-  }, [seed])
+  const el = useMemo(() => orbitalElements(seed, index, weight), [seed, index, weight])
+  const surface = useMemo(() => makePlanetTexture(seed, el.kind), [seed, el.kind])
 
-  useFrame((state) => {
-    if (!ref.current) return
-    const a = state.clock.elapsedTime * speed + phase
-    ref.current.position.x = Math.cos(a) * radius
-    ref.current.position.z = Math.sin(a) * radius
-    ref.current.position.y = Math.sin(a * 1.15 + tilt) * Math.sin(tilt) * radius * 0.45
-    ref.current.lookAt(0, 0, 0)
-    if (sphere.current) {
-      const pulse = 0.7 + Math.sin(state.clock.elapsedTime * 2.2 + seed) * 0.3
-      ;(sphere.current.material as THREE.MeshStandardMaterial).emissiveIntensity = hover ? 2.8 : pulse
+  useFrame((state, d) => {
+    const t = state.clock.elapsedTime * el.speed + el.phase
+    if (orbiter.current) {
+      orbiter.current.position.x = Math.cos(t) * el.a - el.cFocus
+      orbiter.current.position.z = Math.sin(t) * el.b
     }
+    if (body.current) body.current.rotation.y += d * el.spin
     if (glow.current) {
       const gmat = glow.current.material as THREE.SpriteMaterial
-      gmat.opacity = hover ? 0.9 : 0.42 + Math.sin(state.clock.elapsedTime * 2 + seed) * 0.08
+      gmat.opacity = hover ? 0.55 : 0.16
     }
   })
 
   const hoverColor = '#ff2447'
   return (
-    <group ref={ref}>
-      {/* soft billboarded halo (real star glow) */}
-      <sprite ref={glow} scale={hover ? size * 12 : size * 7}>
-        <spriteMaterial
-          map={tex}
-          color={hover ? hoverColor : spectrum[1]}
-          transparent
-          opacity={0.45}
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-        />
-      </sprite>
-      {/* core */}
-      <mesh
-        ref={sphere}
-        onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer' }}
-        onPointerOut={() => { setHover(false); document.body.style.cursor = '' }}
-      >
-        <sphereGeometry args={[size, 20, 20]} />
-        <meshStandardMaterial
-          color={hover ? hoverColor : spectrum[0]}
-          emissive={hover ? hoverColor : spectrum[0]}
-          emissiveIntensity={hover ? 2.4 : 1}
-          metalness={0.1}
-          roughness={0.2}
-        />
-      </mesh>
-      {/* a few atoms get Saturn rings for planetary variety */}
-      {seed % 5 === 0 && (
-        <mesh rotation={[Math.PI / 2.6, 0.4, 0]}>
-          <torusGeometry args={[size * 2.2, size * 0.16, 8, 48]} />
-          <meshBasicMaterial
-            color={spectrum[1]}
+    <group rotation={[el.inc, el.node, 0]}>
+      <OrbitPath a={el.a} b={el.b} cFocus={el.cFocus} />
+      <group ref={orbiter}>
+        {/* thin atmosphere / hover glow */}
+        <sprite ref={glow} scale={el.size * 5.5}>
+          <spriteMaterial
+            map={softTex}
+            color={hover ? hoverColor : el.kind === 'terra' ? '#7ab8ff' : '#ffe0c0'}
             transparent
-            opacity={hover ? 0.85 : 0.5}
+            opacity={0.16}
             blending={THREE.AdditiveBlending}
             depthWrite={false}
           />
-        </mesh>
-      )}
-      <Billboard>
-        <Text
-          position={[0, size + 0.15, 0]}
-          fontSize={hover ? 0.21 : 0.165}
-          color={hover ? hoverColor : '#f4f0e6'}
-          anchorX="center"
-          anchorY="bottom"
-          outlineWidth={0.009}
-          outlineColor="#02030a"
+        </sprite>
+        {/* the planet itself — lit by the sun, real day/night terminator */}
+        <mesh
+          ref={body}
+          onPointerOver={(e) => { e.stopPropagation(); setHover(true); document.body.style.cursor = 'pointer' }}
+          onPointerOut={() => { setHover(false); document.body.style.cursor = '' }}
         >
-          {label}
-        </Text>
-      </Billboard>
+          <sphereGeometry args={[el.size, 32, 32]} />
+          <meshStandardMaterial
+            map={surface}
+            roughness={el.kind === 'gas' ? 0.7 : 0.95}
+            metalness={0.02}
+            emissive={hover ? hoverColor : '#000000'}
+            emissiveIntensity={hover ? 0.35 : 0}
+          />
+        </mesh>
+        {/* ring system on some gas giants */}
+        {el.hasRing && (
+          <mesh rotation={[-Math.PI / 2 + 0.42, 0.2, 0]}>
+            <ringGeometry args={[el.size * 1.45, el.size * 2.35, 48]} />
+            <meshBasicMaterial
+              color="#d8c8a8"
+              transparent
+              opacity={hover ? 0.8 : 0.55}
+              side={THREE.DoubleSide}
+              depthWrite={false}
+            />
+          </mesh>
+        )}
+        <Billboard>
+          <Text
+            position={[0, el.size + 0.14, 0]}
+            fontSize={hover ? 0.2 : 0.14}
+            color={hover ? hoverColor : '#f4f0e6'}
+            anchorX="center"
+            anchorY="bottom"
+            outlineWidth={0.009}
+            outlineColor="#02030a"
+          >
+            {label}
+          </Text>
+        </Billboard>
+      </group>
     </group>
   )
 }
@@ -657,23 +807,23 @@ function Cluster() {
 
   useFrame((state, d) => {
     if (!group.current) return
-    group.current.rotation.y += d * 0.05
+    group.current.rotation.y += d * 0.02
     const m = state.pointer
-    target.current.x = m.x * 0.25
-    target.current.y = m.y * 0.15
+    target.current.x = m.x * 0.22
+    target.current.y = m.y * 0.12
     curr.current.x += (target.current.x - curr.current.x) * 0.04
     curr.current.y += (target.current.y - curr.current.y) * 0.04
     group.current.rotation.x = curr.current.y
-    group.current.rotation.z = curr.current.x * 0.3
+    group.current.rotation.z = curr.current.x * 0.15
   })
 
   return (
     <group ref={group}>
       <Sun />
       <EclipticDisc />
-      <OrbitRings />
+      <AsteroidBelt />
       {skills.map((s, i) => (
-        <Atom key={s.label} label={s.label} seed={i + 1} />
+        <Planet key={s.label} label={s.label} seed={i + 1} index={i} weight={s.weight} />
       ))}
     </group>
   )
@@ -683,14 +833,14 @@ function Scene() {
   return (
     <>
       <color attach="background" args={['#02030a']} />
-      <fog attach="fog" args={['#02030a', 10, 26]} />
+      <fog attach="fog" args={['#02030a', 14, 34]} />
 
-      <ambientLight intensity={0.18} />
-      <pointLight position={[0, 0, 0]} intensity={3} color="#ff6b3a" distance={14} decay={2} />
-      <pointLight position={[8, 5, 4]} intensity={0.5} color="#2c5bff" />
-      <pointLight position={[-8, -4, 2]} intensity={0.35} color="#6b2ec9" />
+      <ambientLight intensity={0.16} />
+      {/* the sun is the light source — planets get a real terminator */}
+      <pointLight position={[0, 0, 0]} intensity={26} color="#ffd9a8" distance={40} decay={1.6} />
+      <pointLight position={[8, 5, 4]} intensity={0.3} color="#2c5bff" />
+      <pointLight position={[-8, -4, 2]} intensity={0.2} color="#6b2ec9" />
 
-      {/* four layers of realistic stars */}
       <StarsLayer count={5500} radius={55} size={0.05} intensity={1} />
       <StarsLayer count={900}  radius={40} size={0.12} intensity={1} />
       <StarsLayer count={180}  radius={30} size={0.28} intensity={1.1} />
@@ -722,16 +872,17 @@ export default function SkillsGalaxy() {
             The <span className="font-serif italic text-neo-red">stack</span> in orbit.
           </h2>
           <p className="mt-5 max-w-xl text-bone/85 text-sm md:text-base leading-relaxed">
-            A little solar system of the tools I reach for most. Move your cursor
-            to tilt the view; hover any star to light it up. Catch a shooting
-            star if you're lucky.
+            A working solar system of the tools I reach for most — textured
+            planets on true Keplerian orbits, an asteroid belt, and a star that
+            actually lights them. Move your cursor to tilt the plane; hover any
+            planet to ignite it.
           </p>
         </div>
 
         <div className="relative h-[72vh] min-h-[560px] rounded-lg border border-white/10 bg-[#02030a] overflow-hidden">
           <Canvas
             style={{ width: '100%', height: '100%' }}
-            camera={{ position: [0, 1.5, 9], fov: 55 }}
+            camera={{ position: [0, 3.4, 9.6], fov: 50 }}
             dpr={[1, 1.8]}
             gl={{ antialias: true, powerPreference: 'high-performance', alpha: false }}
           >
@@ -740,7 +891,6 @@ export default function SkillsGalaxy() {
             </Suspense>
           </Canvas>
 
-          {/* space vignette — deep dark edges */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0"
@@ -749,7 +899,6 @@ export default function SkillsGalaxy() {
                 'radial-gradient(ellipse at center, transparent 45%, rgba(2,3,10,0.7) 100%)',
             }}
           />
-          {/* thin scanline tint for film feel */}
           <div
             aria-hidden
             className="pointer-events-none absolute inset-0 opacity-30 mix-blend-overlay"
@@ -760,7 +909,7 @@ export default function SkillsGalaxy() {
           />
 
           <div className="pointer-events-none absolute bottom-3 left-4 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/60">
-            {skills.length} stars · hover to ignite
+            {skills.length} planets · kepler drive · hover to ignite
           </div>
           <div className="pointer-events-none absolute top-3 right-4 font-mono text-[11px] uppercase tracking-[0.3em] text-bone/60">
             SECTOR-01 · live feed

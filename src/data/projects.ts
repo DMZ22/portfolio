@@ -93,6 +93,7 @@ export const projects: Project[] = [
     description:
       'Full-stack finance app — FastAPI backend with NumPy-based linear regression for spending insights and health scoring, Firebase Auth + Firestore for real-time sync, Flutter cross-platform client with fl_chart dashboards.',
     tech: ['FastAPI', 'NumPy', 'Firebase', 'Firestore'],
+    github: 'https://github.com/DMZ22/smart-money-tracker',
     report: '/reports/smart-money-tracker.pdf',
     category: 'Full-Stack',
     accent: 'from-pink-500 via-rose-500 to-red-500',
