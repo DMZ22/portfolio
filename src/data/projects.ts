@@ -6,6 +6,7 @@ export type Project = {
   tech: string[]
   github?: string
   live?: string
+  report?: string
   category: 'AI/ML' | 'FinTech' | 'Full-Stack' | 'Data Science'
   accent: string
   featured?: boolean
@@ -13,6 +14,21 @@ export type Project = {
 }
 
 export const projects: Project[] = [
+  {
+    slug: 'finsentry',
+    title: 'FinSentry',
+    tagline: 'AML transaction monitoring & alert queue',
+    description:
+      'Flags suspicious accounts the way a bank AML team does — a 9-typology rule engine (structuring, smurfing, round-tripping), an IsolationForest + LOF + Mahalanobis anomaly ensemble and NetworkX money-flow graph analysis, blended into an explainable 0–100 risk score with ranked alerts. 0.93 precision / 0.90 recall against injected ground truth on synthetic data.',
+    tech: ['Python', 'scikit-learn', 'NetworkX', 'SciPy', 'Plotly', 'Streamlit'],
+    github: 'https://github.com/DMZ22/financial-anomaly-detector',
+    live: 'https://finsentry-aml.vercel.app',
+    report: '/reports/finsentry.pdf',
+    category: 'FinTech',
+    accent: 'from-sky-400 via-cyan-400 to-blue-500',
+    featured: true,
+    year: '2026',
+  },
   {
     slug: 'mediscan-ai',
     title: 'MediScan AI',
@@ -22,6 +38,7 @@ export const projects: Project[] = [
     tech: ['Django', 'React', 'TypeScript', 'Gemini AI', 'OpenFDA', 'XGBoost'],
     github: 'https://github.com/DMZ22/mediscan-ai',
     live: 'https://frontend-lake-three-20.vercel.app',
+    report: '/reports/mediscan-ai.pdf',
     category: 'AI/ML',
     accent: 'from-cyan-400 via-teal-400 to-emerald-400',
     featured: true,
@@ -35,6 +52,7 @@ export const projects: Project[] = [
       'Research prototype that treats chart images as first-class input — reconstructs OHLC from pixels via OpenCV + Hough transforms, then fuses rule-based and ML strategies (patterns, structure, S/R, breakout, CNN) into a single calibrated signal. Docker + Streamlit deploy.',
     tech: ['Python', 'OpenCV', 'PyTorch', 'Streamlit', 'Docker', 'CNN'],
     github: 'https://github.com/DMZ22/visionquant',
+    report: '/reports/visionquant.pdf',
     category: 'AI/ML',
     accent: 'from-amber-400 via-orange-500 to-rose-500',
     featured: true,
@@ -49,6 +67,7 @@ export const projects: Project[] = [
     tech: ['React 19', 'Vite', 'TypeScript', 'Tailwind', 'Gemini AI', 'PWA'],
     github: 'https://github.com/DMZ22/quest-ai',
     live: 'https://dmz22.github.io/quest-ai/',
+    report: '/reports/quest-ai.pdf',
     category: 'Full-Stack',
     accent: 'from-lime-400 via-emerald-400 to-teal-500',
     featured: true,
@@ -63,6 +82,7 @@ export const projects: Project[] = [
     tech: ['Python', 'SQL', 'XGBoost', 'FastAPI', 'Streamlit', 'Docker'],
     github: 'https://github.com/DMZ22/customer-churn-analysis',
     live: 'https://customer-churn-analysis-czhxwqfchgufgxtkftnixe.streamlit.app',
+    report: '/reports/customer-churn.pdf',
     category: 'Data Science',
     accent: 'from-blue-500 via-indigo-500 to-violet-500',
     year: '2026',
@@ -74,6 +94,7 @@ export const projects: Project[] = [
     description:
       'Full-stack finance app — FastAPI backend with NumPy-based linear regression for spending insights and health scoring, Firebase Auth + Firestore for real-time sync, Flutter cross-platform client with fl_chart dashboards.',
     tech: ['FastAPI', 'NumPy', 'Firebase', 'Firestore'],
+    report: '/reports/smart-money-tracker.pdf',
     category: 'Full-Stack',
     accent: 'from-pink-500 via-rose-500 to-red-500',
     year: '2026',
@@ -91,6 +112,20 @@ export const projects: Project[] = [
     year: '2025',
   },
   {
+    slug: 'stock-predictor-pro',
+    title: 'Stock Predictor Pro',
+    tagline: 'Real-time signals dashboard for 90+ assets',
+    description:
+      'Live market dashboard covering 90+ stocks, cryptos, forex pairs and commodities — a technical-indicator engine produces composite BUY / SELL / HOLD calls with confidence scoring over Yahoo Finance feeds with per-symbol caching. Deployed serverless on Vercel.',
+    tech: ['Python', 'yfinance', 'Technical Analysis', 'Vercel'],
+    github: 'https://github.com/DMZ22/stock-predictor-pro',
+    live: 'https://stock-predictor-gold.vercel.app',
+    report: '/reports/stock-predictor-pro.pdf',
+    category: 'FinTech',
+    accent: 'from-teal-400 via-cyan-500 to-sky-500',
+    year: '2026',
+  },
+  {
     slug: 'phantom',
     title: 'Phantom',
     tagline: 'Movie discovery & booking platform',
@@ -99,6 +134,7 @@ export const projects: Project[] = [
     tech: ['Django', 'Python', 'PostgreSQL', 'TMDB API', 'Bootstrap'],
     github: 'https://github.com/DMZ22/phantom',
     live: 'https://phantom-fnvl.onrender.com',
+    report: '/reports/phantom.pdf',
     category: 'Full-Stack',
     accent: 'from-slate-400 via-zinc-400 to-stone-500',
     year: '2026',
@@ -111,6 +147,7 @@ export const projects: Project[] = [
       'Classic content-based filtering recommender built with Python, scikit-learn and cosine similarity over TMDB metadata.',
     tech: ['Python', 'scikit-learn', 'pandas', 'NLTK'],
     github: 'https://github.com/DMZ22/Movie-Recommender-System-',
+    report: '/reports/movie-recommender.pdf',
     category: 'Data Science',
     accent: 'from-red-500 via-orange-500 to-yellow-500',
     year: '2025',
@@ -124,6 +161,7 @@ export const projects: Project[] = [
     tech: ['JavaScript', 'React', 'Node.js'],
     github: 'https://github.com/DMZ22/novelnest',
     live: 'https://novelnest-wdfo.vercel.app',
+    report: '/reports/novelnest.pdf',
     category: 'Full-Stack',
     accent: 'from-emerald-400 via-green-500 to-lime-500',
     year: '2025',
@@ -136,6 +174,7 @@ export const projects: Project[] = [
       'Django trading dashboard featuring scalp trade signals, multi-timeframe confluence, 20+ technical indicators, LSTM forecasting, news sentiment, backtesting and Firebase auth. Covers 230+ symbols across US/Indian stocks, 60+ cryptos, commodities, forex and global ETFs.',
     tech: ['Django', 'Python', 'LSTM', 'PostgreSQL', 'Firebase', 'TradingView'],
     github: 'https://github.com/DMZ22/Stock-Trader-Pro',
+    report: '/reports/stock-trader-pro.pdf',
     category: 'FinTech',
     accent: 'from-violet-500 via-fuchsia-500 to-pink-500',
     featured: true,

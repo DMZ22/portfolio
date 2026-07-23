@@ -146,7 +146,7 @@ export default function Hero() {
               </Magnetic>
               <Magnetic>
                 <a
-                  href="/DevCV3.33.pdf"
+                  href="/DevCV3.4.pdf"
                   download
                   className="group inline-flex items-center gap-3 border border-white/20 bg-ink-950/60 backdrop-blur px-6 py-4 font-display text-sm font-semibold uppercase tracking-[0.2em] text-bone transition-colors hover:border-neo-red hover:text-neo-red"
                 >

@@ -60,7 +60,7 @@ const commands: Record<string, string | string[]> = {
 }
 
 const actions: Record<string, () => void> = {
-  resume: () => window.open('/DevCV3.33.pdf', '_blank'),
+  resume: () => window.open('/DevCV3.4.pdf', '_blank'),
   email: () => { window.location.href = 'mailto:devashishmoghe@gmail.com' },
   socials: () => {/* shown as text */},
 }

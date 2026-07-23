@@ -98,7 +98,7 @@ export default function MobileMenu() {
 
               <div className="border-t border-white/10 px-6 py-5 space-y-3">
                 <a
-                  href="/DevCV3.33.pdf"
+                  href="/DevCV3.4.pdf"
                   download
                   onClick={() => setOpen(false)}
                   className="flex items-center justify-center gap-2 bg-neo-red px-4 py-3 font-mono text-xs font-bold uppercase tracking-[0.25em] text-ink-950"

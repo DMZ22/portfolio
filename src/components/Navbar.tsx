@@ -67,7 +67,7 @@ export default function Navbar() {
           </span>
           <SoundToggle />
           <a
-            href="/DevCV3.33.pdf"
+            href="/DevCV3.4.pdf"
             download
             className="group relative border border-neo-red bg-neo-red px-3 py-2 text-ink-950 font-semibold transition-all hover:-translate-y-0.5"
           >

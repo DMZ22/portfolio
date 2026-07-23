@@ -1,5 +1,5 @@
 import { motion, useMotionValue, useSpring } from 'framer-motion'
-import { Github, ArrowUpRight } from 'lucide-react'
+import { Github, ArrowUpRight, FileText } from 'lucide-react'
 import { useRef, useState } from 'react'
 import { projects, type Project } from '../data/projects'
 import Spotlight from './Spotlight'
@@ -97,16 +97,18 @@ function ProjectRow({ p, i }: { p: Project; i: number }) {
       </div>
 
       {/* secondary links */}
-      {(p.github && p.live) && (
+      {((p.github && p.live) || p.report) && (
         <div className="relative z-20 mt-4 flex gap-4 pl-2 md:pl-[8.33%] font-mono text-[10px] uppercase tracking-[0.25em]">
-          <a
-            href={p.github}
-            target="_blank"
-            rel="noreferrer"
-            className="text-bone/60 hover:text-bone inline-flex items-center gap-1.5"
-          >
-            <Github size={12} /> Source
-          </a>
+          {p.github && (
+            <a
+              href={p.github}
+              target="_blank"
+              rel="noreferrer"
+              className="text-bone/60 hover:text-bone inline-flex items-center gap-1.5"
+            >
+              <Github size={12} /> Source
+            </a>
+          )}
           {p.live && (
             <a
               href={p.live}
@@ -115,6 +117,16 @@ function ProjectRow({ p, i }: { p: Project; i: number }) {
               className="text-neo-red hover:text-neo-red-2 inline-flex items-center gap-1.5"
             >
               Live deploy ↗
+            </a>
+          )}
+          {p.report && (
+            <a
+              href={p.report}
+              target="_blank"
+              rel="noreferrer"
+              className="text-bone/60 hover:text-bone inline-flex items-center gap-1.5"
+            >
+              <FileText size={12} /> Report
             </a>
           )}
         </div>

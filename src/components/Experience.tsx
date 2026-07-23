@@ -101,7 +101,7 @@ export default function Experience() {
               proper résumé, just in case the code doesn't do the talking.
             </p>
             <a
-              href="/DevCV3.33.pdf"
+              href="/DevCV3.4.pdf"
               download
               className="mt-6 inline-flex items-center gap-2 border border-white/20 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.25em] text-bone hover:border-neo-red hover:text-neo-red transition-colors"
             >
